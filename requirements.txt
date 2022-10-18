@@ -1,4 +1,4 @@
-asgiref==3.5.2
+asgiref==3.2.3
 Django==4.1.2
 django-cors-headers==3.13.0
 django-debug-toolbar==3.7.0
