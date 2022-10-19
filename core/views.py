@@ -11,7 +11,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter]
     search_fields = ['name', 'hc_code', 'etcng_code', 'etcng_name']
-    queryset = add_products()
+    queryset = Product.objects.all()
 
 
 class StationViewSet(viewsets.ModelViewSet):
