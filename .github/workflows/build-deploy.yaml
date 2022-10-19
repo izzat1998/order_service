@@ -5,6 +5,11 @@ on: [ push, pull_request ]
 
 jobs:
   build:
+    env:
+      DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+      DATABASE_USER: ${{secrets.DATABASE_USER}}
+      DATABASE_PASS: ${{secrets.DATABASE_PASS}}
+
     runs-on: ubuntu-latest
     steps:
       - name: pulling git repo
