@@ -5,6 +5,8 @@ on: [ push, pull_request ]
 
 jobs:
   build:
+    environment:
+      name: testing
     env:
       DATABASE_NAME: ${{secrets.DATABASE_NAME}}
       DATABASE_USER: ${{secrets.DATABASE_USER}}
