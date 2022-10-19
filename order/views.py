@@ -1,12 +1,11 @@
-from django.forms import model_to_dict
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 
+from order.models import ContainerOrder
 from order.serializers.container_order_create import ContainerOrderCreateSerializer
 from order.serializers.container_order_list import ContainerOrderListSerializer
-from order.models import ContainerOrder
 from order.serializers.serializers import ContainerOrderSerializer
 
 

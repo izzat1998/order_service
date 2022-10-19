@@ -74,6 +74,7 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
+
         order_data = validated_data.pop('order')
         counterparty_data = order_data.pop('counterparties')
         container_type_data = validated_data.pop('container_types')
@@ -85,16 +86,15 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
             for counterparty in counterparty.data:
                 CounterPartyOrder.objects.create(**counterparty, order=base_order)
         container_type = ContainerTypeOrderCreateSerializer(data=container_type_data, many=True)
-
         if container_type.is_valid(raise_exception=True):
             for container_type in container_type.data:
                 container_preliminary_cost_data = container_type.pop('container_preliminary_costs')
 
                 container_type = ContainerTypeOrder.objects.create(**container_type, order=order)
-
                 container_preliminary_cost = ContainerPreliminaryCostCreateSerializer(
                     data=container_preliminary_cost_data, many=True)
                 if container_preliminary_cost.is_valid(raise_exception=True):
+
                     for preliminary_cost in container_preliminary_cost.data:
                         counterparty = get_object_or_404(CounterPartyOrder, order=base_order,
                                                          counterparty_id=preliminary_cost[

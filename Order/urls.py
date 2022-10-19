@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('counterparty/', include('counterparty.urls')),
-    path('core/', include('core.urls')),
-    path('order/', include('order.urls')),
+    path('api/counterparty/', include('counterparty.urls')),
+    path('api/core/', include('core.urls')),
+    path('api/order/', include('order.urls')),
+
 ]

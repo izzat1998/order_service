@@ -88,11 +88,15 @@ WSGI_APPLICATION = 'Order.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 20000
+# DATA_UPLOAD_MAX_NUMBER_FIELDS = 20000
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'order_service',
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 # Password validation

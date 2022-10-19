@@ -9,5 +9,6 @@ router.register(r'products', ProductViewSet, basename='product')
 router.register(r'stations', StationViewSet, basename='station')
 
 urlpatterns = [
+
     path('', include(router.urls)),
 ]

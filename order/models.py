@@ -42,8 +42,8 @@ class Order(TimeStampedModel):
     # Order Detail
     shipper = models.CharField(max_length=255, blank=True, null=True)
     consignee = models.CharField(max_length=255, blank=True, null=True)
-    departure = models.ForeignKey(Station, on_delete=models.CASCADE, related_name='destination_orders', null=True)
-    destination = models.ForeignKey(Station, on_delete=models.CASCADE, related_name='departure_orders', null=True)
+    departure = models.ForeignKey(Station, on_delete=models.SET_NULL, related_name='destination_orders', null=True)
+    destination = models.ForeignKey(Station, on_delete=models.SET_NULL, related_name='departure_orders', null=True)
     border_crossing = models.CharField(max_length=255, blank=True, null=True)
     conditions_of_carriage = models.CharField(max_length=255, blank=True, null=True)
     rolling_stock = models.CharField(max_length=255, blank=True, null=True)
@@ -71,7 +71,7 @@ class ContainerOrder(models.Model):
         ('block_train', 'Block train')
     )
     sending_type = models.CharField(max_length=50, choices=SENDING_TYPE_CHOICES, default=SENDING_TYPE_CHOICES[0][0])
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='container_order', null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='container_order', null=True)
 
     class Meta:
         db_table = 'container_order'
