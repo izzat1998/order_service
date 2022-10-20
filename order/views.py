@@ -1,11 +1,12 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from order.models import ContainerOrder
 from order.serializers.container_order_create import ContainerOrderCreateSerializer
 from order.serializers.container_order_list import ContainerOrderListSerializer
+from order.serializers.container_order_update import ContainerOrderUpdateSerializer
 from order.serializers.serializers import ContainerOrderSerializer
 
 
@@ -33,3 +34,12 @@ class ContainerOrderCreate(APIView):
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
         return Response({"Order number": order.order_number}, status=status.HTTP_201_CREATED)
+
+
+class ContainerOrderUpdate(APIView):
+    def put(self, request, order_number):
+        order = get_object_or_404(ContainerOrder, order__order_number=order_number)
+        serializer = ContainerOrderUpdateSerializer(order, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        return Response({"Order number": order.order.order_number}, status=status.HTTP_201_CREATED)

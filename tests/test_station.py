@@ -36,3 +36,9 @@ def test_update_station(client, destination):
                           data={'name': 'station2', 'code': "7200001312"},
                           content_type='application/json')
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_station(client, destination):
+    response = client.delete(f'/api/core/stations/{destination.id}/')
+    assert response.status_code == 204

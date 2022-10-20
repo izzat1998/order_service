@@ -6,18 +6,21 @@ from order.models import ContainerOrder, Order, ContainerTypeOrder
 
 
 class ProductSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(read_only=True)
     hc_code = serializers.IntegerField(read_only=True)
     etcng_code = serializers.IntegerField(read_only=True)
 
 
 class StationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=100, read_only=True)
     code = serializers.CharField(max_length=100, read_only=True)
     railway_name = serializers.CharField(max_length=255, read_only=True)
 
 
 class CounterPartyOrder(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     category = CategorySerializer()
     counterparty = CounterpartySerializer()
 
@@ -27,17 +30,20 @@ class ContainerSerializer(serializers.Serializer):
 
 
 class ContainerExpanseSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     container = ContainerSerializer()
     counterparty = CounterPartyOrder()
     actual_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
 
 class ContainerPreliminaryCost(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     counterparty = CounterPartyOrder()
     preliminary_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
 
 class ContainerTypeOrderSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     agreed_rate = serializers.DecimalField(decimal_places=2, max_digits=10)
     quantity = serializers.IntegerField()
     container_type = serializers.ChoiceField(choices=ContainerTypeOrder.CONTAINER_TYPE_CHOICES)
@@ -46,7 +52,7 @@ class ContainerTypeOrderSerializer(serializers.Serializer):
 
 
 class OrderSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
+
     order_number = serializers.IntegerField()
     lot_number = serializers.CharField(max_length=255)
     date = serializers.DateField()
@@ -70,6 +76,7 @@ class OrderSerializer(serializers.Serializer):
 
 
 class ContainerOrderSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     order = OrderSerializer()
     sending_type = serializers.ChoiceField(choices=ContainerOrder.SENDING_TYPE_CHOICES)
     product = ProductSerializer()

@@ -3,6 +3,7 @@ import datetime
 import pytest
 
 from core.models import Product, Station
+from counterparty.models import Category, Counterparty
 from order.models import ContainerOrder, Order
 
 
@@ -22,6 +23,18 @@ def departure(db):
 def destination(db):
     destination = Station.objects.create(name='Altynkol', code="720220", railway_name="Kazakhstan")
     return destination
+
+
+@pytest.fixture
+def category(db):
+    category = Category.objects.create(name='Rail freight')
+    return category
+
+
+@pytest.fixture
+def counterparty(db):
+    counterparty = Counterparty.objects.create(name='Transcontainer')
+    return counterparty
 
 
 @pytest.fixture
@@ -51,27 +64,3 @@ def container_order(db, departure, destination, product):
     container_order = ContainerOrder.objects.create(order=order, product=product,
                                                     sending_type=ContainerOrder.SENDING_TYPE_CHOICES[0][0])
     return container_order
-# @pytest.fixture
-# def user_1(db):
-#     product = Product.objects.create(name='product', hc_code=121313, etcng_code=12112, etcng_name='hello')
-#     print('create-product')
-#     return product
-#
-#
-# @pytest.fixture
-# def new_product_factory(db):
-#     def create_product(
-#             name: str,
-#             hc_code: int,
-#             etcng_code: int,
-#             etcng_name: str
-#     ):
-#         product = Product.objects.create(name=name, hc_code=hc_code, etcng_code=etcng_code, etcng_name=etcng_name)
-#         return product
-#
-#     return create_product
-
-
-# @pytest.fixture
-# def new_product(db, new_product_factory):
-#     return new_product_factory("product", 12334, 12112, "hello")

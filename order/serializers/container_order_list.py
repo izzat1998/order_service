@@ -30,6 +30,7 @@ class OrderListSerializer(serializers.Serializer):
 
 
 class ContainerOrderListSerializer(serializers.Serializer):
+
     order = OrderListSerializer()
     sending_type = serializers.ChoiceField(source='get_sending_type_display',
                                            choices=ContainerOrder.SENDING_TYPE_CHOICES, read_only=True)

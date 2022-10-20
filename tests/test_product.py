@@ -32,3 +32,9 @@ def test_update_product(client, product):
                           data={'name': 'name_test22', 'hc_code': 921000, 'etcng_code': 760000,
                                 'etcng_name': 'etcng_name'}, content_type='application/json')
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_product(client, product):
+    response = client.delete(f'/api/core/products/{product.id}/')
+    assert response.status_code == 204

@@ -26,6 +26,8 @@ class CounterPartyOrderCreateSerializer(serializers.Serializer):
     counterparty_id = serializers.IntegerField()
 
 
+
+
 class ContainerTypeOrderCreateSerializer(serializers.Serializer):
     agreed_rate = serializers.DecimalField(decimal_places=2, max_digits=10)
     quantity = serializers.IntegerField()
@@ -106,3 +108,5 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
                                                                 preliminary_cost=preliminary_cost['preliminary_cost']
                                                                 )
         return base_order
+
+
