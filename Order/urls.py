@@ -20,8 +20,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('api/counterparty/', include('counterparty.urls')),
-    path('api/core/', include('core.urls')),
-    path('api/order/', include('order.urls')),
+    path('counterparty/', include('counterparty.urls')),
+    path('core/', include('core.urls')),
+    path('order/', include('order.urls')),
 
 ]
