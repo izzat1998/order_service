@@ -4,7 +4,7 @@ import pytest
 
 from core.models import Product, Station
 from counterparty.models import Category, Counterparty
-from order.models import ContainerOrder, Order
+from order.models import ContainerOrder, Order, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost
 
 
 @pytest.fixture
@@ -38,7 +38,7 @@ def counterparty(db):
 
 
 @pytest.fixture
-def container_order(db, departure, destination, product):
+def container_order(db, departure, destination, product, counterparty, category):
     order = Order.objects.create(
         order_number=7777,
         lot_number="12345",
@@ -61,6 +61,14 @@ def container_order(db, departure, destination, product):
         customer=1,
 
     )
+    counterparty_order = CounterPartyOrder.objects.create(counterparty=counterparty, category=category, order=order)
     container_order = ContainerOrder.objects.create(order=order, product=product,
                                                     sending_type=ContainerOrder.SENDING_TYPE_CHOICES[0][0])
+    container_type = ContainerTypeOrder.objects.create(agreed_rate="1010.15", quantity=55, container_type='40HC',
+                                                       order=container_order)
+    ContainerPreliminaryCost.objects.create(counterparty=counterparty_order,
+                                            container_type=container_type,
+                                            preliminary_cost='125.45'
+                                            )
+
     return container_order
