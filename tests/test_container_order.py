@@ -15,7 +15,7 @@ def test_list_container_order(client, container_order):
 @pytest.mark.django_db
 def test_list_container_order(client, container_order):
     response = client.get(f'/api/order/list/{container_order.order.order_number}/')
-    assert response.json()['order']['order_number'] == container_order.order.order_number
+    assert response.json()[0]['order']['order_number'] == container_order.order.order_number
     assert response.status_code == 200
 
 
