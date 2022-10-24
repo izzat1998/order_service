@@ -3,8 +3,9 @@ from rest_framework.generics import ListAPIView, UpdateAPIView, get_object_or_40
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from order.models import ContainerOrder
+from order.models import ContainerOrder, Order
 from order.serializers.container_order_create import ContainerOrderCreateSerializer
+from order.serializers.container_order_expanse_create import ContainerOrderExpanseCreateSerializer
 from order.serializers.container_order_list import ContainerOrderListSerializer
 from order.serializers.container_order_update import ContainerOrderUpdateSerializer
 from order.serializers.serializers import ContainerOrderSerializer
@@ -42,4 +43,19 @@ class ContainerOrderUpdate(APIView):
         serializer = ContainerOrderUpdateSerializer(order, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
-        return Response({"Order number": order.order.order_number}, status=status.HTTP_201_CREATED)
+        return Response({"Order number": order.order.order_number}, status=status.HTTP_200_OK)
+
+
+class ContainerOrderDelete(APIView):
+    def delete(self, request, order_number):
+        order = get_object_or_404(Order, order_number=order_number)
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ContainerOrderExpanseCreate(APIView):
+    def post(self, request, order_number):
+        serializer = ContainerOrderExpanseCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"Order number": order_number}, status=status.HTTP_201_CREATED)

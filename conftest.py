@@ -66,6 +66,7 @@ def container_order(db, departure, destination, product, counterparty, category)
                                                     sending_type=ContainerOrder.SENDING_TYPE_CHOICES[0][0])
     container_type = ContainerTypeOrder.objects.create(agreed_rate="1010.15", quantity=55, container_type='40HC',
                                                        order=container_order)
+
     ContainerPreliminaryCost.objects.create(counterparty=counterparty_order,
                                             container_type=container_type,
                                             preliminary_cost='125.45'
