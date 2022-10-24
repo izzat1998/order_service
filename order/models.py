@@ -197,17 +197,25 @@ class Container(TimeStampedModel):
         return self.name
 
 
-class ContainerExpanse(TimeStampedModel):
-    counterparty = models.ForeignKey(CounterPartyOrder,  on_delete=models.CASCADE)
-    container = models.ForeignKey(Container, on_delete=models.CASCADE)
-    container_type = models.ForeignKey(ContainerTypeOrder,related_name='expanses', on_delete=models.CASCADE)
+class ContainerActualCost(TimeStampedModel):
+    counterparty = models.ForeignKey(CounterPartyOrder, on_delete=models.CASCADE)
     actual_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    container_expanse = models.ForeignKey('ContainerExpanse', related_name='actual_costs', on_delete=models.CASCADE,
+                                          null=True)
 
     class Meta:
-        unique_together = ('counterparty', 'container')
+        unique_together = ('counterparty', 'container_expanse')
+
+
+class ContainerExpanse(TimeStampedModel):
+    container = models.ForeignKey(Container, on_delete=models.CASCADE)
+    container_type = models.ForeignKey(ContainerTypeOrder, related_name='expanses', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('container_type', 'container')
         db_table = 'container_expanse'
         verbose_name = 'Container expanse'
         verbose_name_plural = 'Container expanses'
 
     def __str__(self):
-        return str(self.container_type) + '-' + str(self.counterparty) + '-' + str(self.container)
+        return str(self.container_type) + '-' + '-' + str(self.container)

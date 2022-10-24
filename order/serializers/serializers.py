@@ -25,15 +25,23 @@ class CounterPartyOrder(serializers.Serializer):
     counterparty = CounterpartySerializer()
 
 
+class CounterPartyExpanseOrder(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+
+
 class ContainerSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255, read_only=True)
+
+
+class ContainerActualCostSerializer(serializers.Serializer):
+    counterparty_id = serializers.IntegerField()
+    actual_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
 
 class ContainerExpanseSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     container = ContainerSerializer()
-    counterparty = CounterPartyOrder()
-    actual_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
+    actual_costs = ContainerActualCostSerializer(many=True)
 
 
 class ContainerPreliminaryCost(serializers.Serializer):
@@ -52,7 +60,6 @@ class ContainerTypeOrderSerializer(serializers.Serializer):
 
 
 class OrderSerializer(serializers.Serializer):
-
     order_number = serializers.IntegerField()
     lot_number = serializers.CharField(max_length=255)
     date = serializers.DateField()

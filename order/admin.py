@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from order.models import Order, ContainerOrder, WagonOrder, WagonEmptyOrder, CounterPartyOrder, ContainerTypeOrder, \
-    ContainerPreliminaryCost, ContainerExpanse, Container
+    ContainerPreliminaryCost, ContainerExpanse, Container, ContainerActualCost
 
 
 # Register your models here.
@@ -57,7 +57,7 @@ admin.site.register(ContainerPreliminaryCost, ContainerPreliminaryCostAdmin)
 
 
 class ContainerExpanseAdmin(admin.ModelAdmin):
-    list_display = ('counterparty', 'container', 'container_type', 'actual_cost')
+    list_display = ('container_type', 'container')
 
 
 admin.site.register(ContainerExpanse, ContainerExpanseAdmin)
@@ -68,3 +68,10 @@ class ContainerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Container, ContainerAdmin)
+
+
+class ContainerActualCostAdmin(admin.ModelAdmin):
+    list_display = ('counterparty', 'actual_cost', 'container_expanse')
+
+
+admin.site.register(ContainerActualCost, ContainerActualCostAdmin)
