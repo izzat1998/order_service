@@ -13,8 +13,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     queryset = CounterpartyCategory.objects.all()
 
-    def get_queryset(self):
-        add_products()
 
 
 class CounterpartyViewSet(viewsets.ModelViewSet):
