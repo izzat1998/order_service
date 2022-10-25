@@ -14,7 +14,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = CounterpartyCategory.objects.all()
 
     def get_queryset(self):
-        add_stations()
         add_products()
 
 
