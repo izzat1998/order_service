@@ -36,10 +36,10 @@ jobs:
         run: python -m pip install --upgrade pip
       - name: install all dependencies
         run: pip install -r requirements.txt
-#      - name: test with pytest
-#        run: |
-#          pip install pytest
-#          pytest
+      - name: test with pytest
+        run: |
+          pip install pytest
+          pytest
   
 
   deploy:
@@ -60,9 +60,5 @@ jobs:
           script: |
             cd ../home/izzat/order_service
             git pull origin master
-            source env/bin/activate
-            python manage.py makemigrations
-            python manage.py migrate
-            deactivate
             systemctl restart order
             
