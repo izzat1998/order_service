@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'container_order',
 
     'counterparty.apps.CounterpartyConfig',
     'order.apps.OrderConfig',

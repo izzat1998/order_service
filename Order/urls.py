@@ -29,5 +29,6 @@ urlpatterns = [
     path('api/counterparty/', include('counterparty.urls')),
     path('api/core/', include('core.urls')),
     path('api/order/', include('order.urls')),
+    path('api/container_order/', include('container_order.urls')),
 
 ]

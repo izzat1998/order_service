@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from counterparty.models import Counterparty, Category
+from counterparty.models import Counterparty, CounterpartyCategory
 
 
 # Register your models here.
@@ -16,4 +16,4 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(CounterpartyCategory, CategoryAdmin)

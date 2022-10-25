@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from order.models import ContainerOrder, Order
-from order.serializers.serializers import ProductSerializer, StationSerializer
+from container_order.models import ContainerOrder
+from core.serializers import StationSerializer, ProductSerializer
+from order.models import Order
 
 
 class OrderListSerializer(serializers.Serializer):
@@ -30,7 +31,6 @@ class OrderListSerializer(serializers.Serializer):
 
 
 class ContainerOrderListSerializer(serializers.Serializer):
-
     order = OrderListSerializer()
     sending_type = serializers.ChoiceField(source='get_sending_type_display',
                                            choices=ContainerOrder.SENDING_TYPE_CHOICES, read_only=True)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from order.models import ContainerExpanse, Container
+from container_order.models import ContainerExpanse
+from core.models import Container
 
 
 class ContainerOrderExpanseActualCost(serializers.Serializer):

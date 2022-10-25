@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
+from container_order.models import ContainerTypeOrder, ContainerOrder
+from core.serializers import ContainerSerializer
 from counterparty.serializers import CategorySerializer, CounterpartySerializer
-from order.models import ContainerOrder, Order, ContainerTypeOrder
+from order.models import Order
 
 
 class ProductSerializer(serializers.Serializer):
@@ -29,8 +31,7 @@ class CounterPartyExpanseOrder(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
 
 
-class ContainerSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255, read_only=True)
+
 
 
 class ContainerActualCostSerializer(serializers.Serializer):

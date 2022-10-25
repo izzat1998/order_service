@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Product, Station
+from core.models import Product, Station, Container
 
 
 # Register your models here.
@@ -17,3 +17,10 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Product, ProductAdmin)
+
+
+class ContainerAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+admin.site.register(Container, ContainerAdmin)

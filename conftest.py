@@ -2,9 +2,10 @@ import datetime
 
 import pytest
 
+from container_order.models import CounterPartyOrder, ContainerOrder, ContainerTypeOrder, ContainerPreliminaryCost
 from core.models import Product, Station
-from counterparty.models import Category, Counterparty
-from order.models import ContainerOrder, Order, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost
+from counterparty.models import CounterpartyCategory, Counterparty
+from order.models import Order
 
 
 @pytest.fixture
@@ -27,7 +28,7 @@ def destination(db):
 
 @pytest.fixture
 def category(db):
-    category = Category.objects.create(name='Rail freight')
+    category = CounterpartyCategory.objects.create(name='Rail freight')
     return category
 
 

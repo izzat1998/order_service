@@ -3,13 +3,13 @@ from django.db import models
 from core.models import TimeStampedModel
 
 
-class Category(TimeStampedModel):
+class CounterpartyCategory(TimeStampedModel):
     name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
-        db_table = 'category'
+        verbose_name = "CounterpartyCategory"
+        verbose_name_plural = "CounterpartyCategories"
+        db_table = 'counterparty_category'
 
     def __str__(self):
         return self.name

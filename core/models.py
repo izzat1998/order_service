@@ -14,7 +14,7 @@ class TimeStampedModel(models.Model):
 class Station(TimeStampedModel):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=255)
-    railway_name = models.CharField(max_length=255,blank=True,null=True)
+    railway_name = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         constraints = [
@@ -44,3 +44,15 @@ class Product(TimeStampedModel):
 
     def __str__(self):
         return f'{self.name}({self.hc_code}, {self.etcng_code})'
+
+
+class Container(TimeStampedModel):
+    name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        db_table = 'container'
+        verbose_name = 'Container'
+        verbose_name_plural = 'Containers'
+
+    def __str__(self):
+        return self.name

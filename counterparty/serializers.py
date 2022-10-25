@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from counterparty.models import Category, Counterparty
+from counterparty.models import CounterpartyCategory, Counterparty
 
 
 class CategorySerializer(serializers.Serializer):
@@ -8,7 +8,7 @@ class CategorySerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
 
     def create(self, validated_data):
-        return Category.objects.create(**validated_data)
+        return CounterpartyCategory.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name")

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Product, Station
+from core.models import Product, Station, Container
 
 
 class ProductSerializer(serializers.Serializer):
@@ -34,5 +34,17 @@ class StationSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name")
         instance.code = validated_data.get("code")
+        instance.save()
+        return instance
+
+
+class ContainerSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255, read_only=True)
+
+    def create(self, validated_data):
+        return Container.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get("name")
         instance.save()
         return instance
