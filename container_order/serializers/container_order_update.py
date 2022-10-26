@@ -12,16 +12,11 @@ class ContainerPreliminaryCostUpdateSerializer(serializers.Serializer):
     preliminary_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
 
-class CounterPartyOrderUpdateSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    category_id = serializers.IntegerField()
-    counterparty_id = serializers.IntegerField()
 
 
 class ContainerTypeOrderUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     agreed_rate = serializers.DecimalField(decimal_places=2, max_digits=10)
-    quantity = serializers.IntegerField()
     container_type = serializers.ChoiceField(choices=ContainerTypeOrder.CONTAINER_TYPE_CHOICES)
     container_preliminary_costs = ContainerPreliminaryCostUpdateSerializer(many=True)
     # expanses = ContainerExpanseCreateSerializer(many=True)
@@ -48,12 +43,10 @@ class OrderUpdateSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
-    counterparties = CounterPartyOrderUpdateSerializer(many=True)
 
 
 class ContainerOrderUpdateSerializer(serializers.Serializer):
     order = OrderUpdateSerializer()
-    container_types = ContainerTypeOrderUpdateSerializer(many=True)
     sending_type = serializers.ChoiceField(choices=ContainerOrder.SENDING_TYPE_CHOICES)
     product_id = serializers.IntegerField()
 
@@ -67,9 +60,6 @@ class ContainerOrderUpdateSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         order_data = validated_data.pop('order')
-        counterparty_data = order_data.pop('counterparties')
-        container_type_data = validated_data.pop('container_types')
-
         instance.order.lot_number = order_data.pop('lot_number')
         instance.order.position = order_data.pop('position')
         instance.order.type = order_data.pop('type')
@@ -87,32 +77,8 @@ class ContainerOrderUpdateSerializer(serializers.Serializer):
         instance.order.comment = order_data.pop('comment')
         instance.order.manager = order_data.pop('manager')
         instance.order.customer = order_data.pop('customer')
+        instance.product_id = validated_data.pop('product_id')
+        instance.sending_type = validated_data.pop('sending_type')
         instance.order.save()
-
-        counterparty = CounterPartyOrderUpdateSerializer(data=counterparty_data, many=True)
-        if counterparty.is_valid(raise_exception=True):
-            for counterparty_data in counterparty.data:
-                counterparty = get_object_or_404(CounterPartyOrder, id=counterparty_data['id'])
-                counterparty.counterparty_id = counterparty_data['counterparty_id']
-                counterparty.category_id = counterparty_data['category_id']
-                counterparty.save()
-        container_type = ContainerTypeOrderUpdateSerializer(data=container_type_data, many=True)
-
-        if container_type.is_valid(raise_exception=True):
-            for container_type in container_type.data:
-                container_preliminary_cost_data = container_type.pop('container_preliminary_costs')
-
-                container_type_order = get_object_or_404(ContainerTypeOrder, id=container_type['id'])
-                container_type_order.agreed_rate = container_type['agreed_rate']
-                container_type_order.quantity = container_type['quantity']
-                container_type_order.container_type = container_type['container_type']
-                container_type_order.save()
-                container_preliminary_cost = ContainerPreliminaryCostUpdateSerializer(
-                    data=container_preliminary_cost_data, many=True)
-                if container_preliminary_cost.is_valid(raise_exception=True):
-                    for preliminary_cost in container_preliminary_cost.data:
-                        preliminary = get_object_or_404(ContainerPreliminaryCost, id=preliminary_cost['id'])
-                        preliminary.preliminary_cost = preliminary_cost['preliminary_cost']
-                        preliminary.save()
-
+        instance.save()
         return instance

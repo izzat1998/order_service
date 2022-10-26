@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import ListAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, get_object_or_404, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from container_order.models import ContainerOrder
+from container_order.models import ContainerOrder, CounterPartyOrder
 from container_order.serializers.container_order_create import ContainerOrderCreateSerializer
-from container_order.serializers.container_order_expanse_create import ContainerOrderExpanseCreateSerializer
 from container_order.serializers.container_order_list import ContainerOrderListSerializer
 from container_order.serializers.container_order_update import ContainerOrderUpdateSerializer
+from container_order.serializers.counterparty_order_serializer import \
+    CounterPartyOrderCreateSerializer, CounterPartyUpdateSerializer, CounterPartyOrderListSerializer
 from container_order.serializers.serializers import ContainerOrderSerializer
 from order.models import Order
 
@@ -54,9 +55,22 @@ class ContainerOrderDelete(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ContainerOrderExpanseCreate(APIView):
-    def post(self, request, order_number):
-        serializer = ContainerOrderExpanseCreateSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"Order number": order_number}, status=status.HTTP_201_CREATED)
+class CounterPartyOrderList(ListAPIView):
+    serializer_class = CounterPartyOrderListSerializer
+    queryset = CounterPartyOrder.objects.all()
+
+
+class CounterPartyOrderCreate(CreateAPIView):
+    serializer_class = CounterPartyOrderCreateSerializer
+    queryset = CounterPartyOrder.objects.all()
+
+
+class CounterPartyOrderUpdate(UpdateAPIView):
+    lookup_field = 'pk'
+    serializer_class = CounterPartyUpdateSerializer
+    queryset = CounterPartyOrder.objects.all()
+
+
+class CounterPartyOrderDelete(DestroyAPIView):
+    lookup_field = 'pk'
+    queryset = CounterPartyOrder.objects.all()
