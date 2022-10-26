@@ -39,7 +39,7 @@ jobs:
         run: pip install -r requirements.txt
       - name: test with pytest
         run: |
-          python manage.py makemigrations
+          python manage.py makemigrations order,container_order,counterparty,core
           python manage.py migrate
           pip install pytest
           pytest
