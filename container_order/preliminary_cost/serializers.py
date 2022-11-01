@@ -3,7 +3,7 @@ from rest_framework import serializers
 from container_order.models import ContainerPreliminaryCost
 
 
-class CounterPreliminaryCreateSerializer(serializers.Serializer):
+class ContainerPreliminaryCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     preliminary_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
     counterparty_id = serializers.IntegerField()
@@ -13,7 +13,7 @@ class CounterPreliminaryCreateSerializer(serializers.Serializer):
         return ContainerPreliminaryCost.objects.create(**validated_data)
 
 
-class CounterPreliminaryUpdateSerializer(serializers.Serializer):
+class ContainerPreliminaryUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     preliminary_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
     counterparty_id = serializers.IntegerField(read_only=True)
