@@ -1,6 +1,5 @@
 from django.db.models import Q
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
 
 from container_order.models import ContainerTypeOrder, ContainerOrder, CounterPartyOrder, ContainerPreliminaryCost
 from core.models import Station, Product
@@ -10,8 +9,6 @@ from order.models import Order
 class ContainerPreliminaryCostUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     preliminary_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
-
-
 
 
 class ContainerTypeOrderUpdateSerializer(serializers.Serializer):

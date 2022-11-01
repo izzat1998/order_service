@@ -33,8 +33,20 @@ def category(db):
 
 
 @pytest.fixture
+def category_2(db):
+    category = CounterpartyCategory.objects.create(name='Ocean freight')
+    return category
+
+
+@pytest.fixture
 def counterparty(db):
     counterparty = Counterparty.objects.create(name='Transcontainer')
+    return counterparty
+
+
+@pytest.fixture
+def counterparty_2(db):
+    counterparty = Counterparty.objects.create(name='UZJDK')
     return counterparty
 
 
@@ -74,3 +86,11 @@ def container_order(db, departure, destination, product, counterparty, category)
                                             )
 
     return container_order
+
+
+@pytest.fixture
+def counterparty_order2(db, container_order, counterparty_2, category_2):
+    counterparty_order = CounterPartyOrder.objects.create(order=container_order.order,
+                                                          counterparty=counterparty_2,
+                                                          category=category_2)
+    return counterparty_order
