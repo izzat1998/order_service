@@ -39,4 +39,5 @@ class CounterPartyUpdateSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.category_id = validated_data.get('category_id')
         instance.counterparty_id = validated_data.get('counterparty_id')
+        instance.save()
         return instance
