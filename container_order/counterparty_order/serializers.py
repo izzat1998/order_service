@@ -32,7 +32,7 @@ class CounterPartyOrderCreateSerializer(serializers.Serializer):
 
 class CounterPartyUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    order_id = serializers.IntegerField(read_only=True)
+    order_number = serializers.IntegerField(source='order.order_number', read_only=True)
     category_id = serializers.IntegerField()
     counterparty_id = serializers.IntegerField()
 
