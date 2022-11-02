@@ -50,5 +50,3 @@ class ContainerOrderDelete(APIView):
         order = get_object_or_404(Order, order_number=order_number)
         order.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
