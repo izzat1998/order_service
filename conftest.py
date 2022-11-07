@@ -2,10 +2,10 @@ import datetime
 
 import pytest
 
-from apps.container_order.models import CounterPartyOrder, ContainerOrder, ContainerTypeOrder, ContainerPreliminaryCost
-from apps.core.models import Product, Station
-from apps.counterparty.models import CounterpartyCategory, Counterparty
-from apps.order.models import Order
+from container_order.models import CounterPartyOrder, ContainerOrder, ContainerTypeOrder, ContainerPreliminaryCost
+from core.models import Product, Station
+from counterparty.models import CounterpartyCategory, Counterparty
+from order.models import Order
 
 
 @pytest.fixture

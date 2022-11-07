@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ContainerOrderConfig(AppConfig):
+class WagonOrderConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.container_order'
+    name = 'apps.wagon_order'
