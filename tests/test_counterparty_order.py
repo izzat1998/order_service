@@ -21,6 +21,7 @@ def test_update_counterparty_order(client, counterparty_order2, counterparty_2, 
     assert response.status_code == 200
 
 
+
 @pytest.mark.django_db
 def test_create_counterparty_order(client, container_order, counterparty_2, category_2):
     counterparty_order = {
