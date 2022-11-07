@@ -4,6 +4,7 @@ from container_order.container_type.views import ContainerTypeOrderCreate, Conta
     ContainerTypeOrderDelete
 from container_order.counterparty_order.views import CounterPartyOrderList, CounterPartyOrderCreate, \
     CounterPartyOrderUpdate, CounterPartyOrderDelete
+from container_order.expanse.views import ContainerExpanseCreate
 from container_order.preliminary_cost.views import ContainerPreliminaryCostCreate, ContainerPreliminaryCostUpdate, \
     ContainerPreliminaryCostDelete
 from container_order.views import ContainerOrderList, ContainerOrderDetail, ContainerOrderUpdate, ContainerOrderDelete, \
@@ -37,4 +38,7 @@ urlpatterns = [
     path('container_preliminary_cost_delete/<int:pk>/', ContainerPreliminaryCostDelete.as_view(),
          name='container_preliminary_cost_delete'),
 
+    # CONTAINER EXPANSE
+
+    path('container_expanse_create/', ContainerExpanseCreate.as_view(), name='container_expanse_create')
 ]
