@@ -3,6 +3,7 @@ from container_order.models import ContainerTypeOrder, ContainerOrder
 
 
 class ContainerTypeOrderCreateSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     agreed_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
     quantity = serializers.IntegerField(default=0)
     container_type = serializers.ChoiceField(choices=ContainerTypeOrder.CONTAINER_TYPE_CHOICES)
