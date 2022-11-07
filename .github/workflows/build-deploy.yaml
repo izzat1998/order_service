@@ -42,6 +42,7 @@ jobs:
         run: |
           python manage.py makemigrations
           python manage.py migrate
+
       - name: test with pytest
         run: |
           pip install pytest
