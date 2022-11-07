@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.container_order.models import ContainerOrder, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost, \
+from container_order.models import ContainerOrder, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost, \
     ContainerExpanse, ContainerActualCost
 
 
