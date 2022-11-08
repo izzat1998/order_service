@@ -18,8 +18,6 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.documentation import include_docs_urls
 
-
-
 urlpatterns = [
 
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
@@ -29,9 +27,9 @@ urlpatterns = [
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('api/counterparty/', include('apps.counterparty.urls')),
-    path('api/core/', include('apps.core.urls')),
-    path('api/order/', include('apps.order.urls')),
-    path('api/container_order/', include('apps.container_order.urls')),
+    path('counterparty/', include('apps.counterparty.urls')),
+    path('core/', include('apps.core.urls')),
+    path('order/', include('apps.order.urls')),
+    path('container_order/', include('apps.container_order.urls')),
 
 ]
