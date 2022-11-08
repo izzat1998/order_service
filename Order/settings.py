@@ -52,11 +52,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
-    'container_order',
+    'apps.container_order',
 
-    'counterparty.apps.CounterpartyConfig',
-    'order.apps.OrderConfig',
-    'core.apps.CoreConfig'
+    'apps.counterparty.apps.CounterpartyConfig',
+    'apps.order.apps.OrderConfig',
+    'apps.core.apps.CoreConfig'
 ]
 
 SPECTACULAR_SETTINGS = {
