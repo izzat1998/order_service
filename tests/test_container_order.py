@@ -7,13 +7,13 @@ import pytest
 
 @pytest.mark.django_db
 def test_list_container_order(client, container_order):
-    response = client.get('/api/container_order/list/')
+    response = client.get('/container_order/list/')
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_list_container_order(client, container_order):
-    response = client.get(f'/api/container_order/list/{container_order.order.order_number}/')
+    response = client.get(f'/container_order/list/{container_order.order.order_number}/')
     assert response.json()[0]['order']['order_number'] == container_order.order.order_number
     assert response.status_code == 200
 
@@ -66,7 +66,7 @@ def test_create_container_order(client, departure, destination, product, categor
             }
         ]
     }
-    response = client.post('/api/container_order/create/', data=order_json, content_type='application/json')
+    response = client.post('/container_order/create/', data=order_json, content_type='application/json')
 
     assert response.status_code == 201
 
@@ -120,7 +120,7 @@ def test_update_container_order(client, container_order, departure, destination,
         ]
     }
 
-    response = client.put(f'/api/container_order/list/{container_order.order.order_number}/edit/',
+    response = client.put(f'/container_order/list/{container_order.order.order_number}/edit/',
                           data=updated_order_json,
                           content_type='application/json')
 
@@ -128,7 +128,7 @@ def test_update_container_order(client, container_order, departure, destination,
 
 
 def test_delete_container_order(client, container_order):
-    response = client.delete(f'/api/container_order/list/{container_order.order.order_number}/delete/',
+    response = client.delete(f'/container_order/list/{container_order.order.order_number}/delete/',
                              content_type='application/json')
 
     assert response.status_code == 204
