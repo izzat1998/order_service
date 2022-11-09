@@ -3,8 +3,6 @@ import datetime
 import pytest
 
 
-
-
 @pytest.mark.django_db
 def test_list_container_order(client, container_order):
     response = client.get('/container_order/list/')
@@ -22,10 +20,10 @@ def test_list_container_order(client, container_order):
 def test_create_container_order(client, departure, destination, product, category, counterparty):
     order_json = {
         "order": {
-            "order_number": 122,
+            "order_number": 15,
             "lot_number": "1111",
             "date": "2022-10-14",
-            "position": "Block train",
+            "position": "block_train",
             "type": "import",
             "shipment_status": "delivered",
             "payment_status": "issued",
@@ -40,32 +38,12 @@ def test_create_container_order(client, departure, destination, product, categor
             "destination_country": "China",
             "comment": "Hello world",
             "manager": 1,
-            "customer": 1,
-            "counterparties": [
-                {
-                    "category_id": category.id,
-                    "counterparty_id": counterparty.id
-                }
-            ]
+            "customer": 1
         },
         "sending_type": "single",
-        "product_id": product.id,
-        "container_types": [
-            {
-                "agreed_rate": "500.00",
-                "quantity": 35,
-                "container_type": "40HC",
-                "container_preliminary_costs": [
-                    {
-                        "category_id": category.id,
-                        "counterparty_id": counterparty.id,
-                        "preliminary_cost": "1500.00"
-
-                    },
-                ]
-            }
-        ]
+        "product_id": product.id
     }
+
     response = client.post('/container_order/create/', data=order_json, content_type='application/json')
 
     assert response.status_code == 201
@@ -74,15 +52,15 @@ def test_create_container_order(client, departure, destination, product, categor
 def test_update_container_order(client, container_order, departure, destination, product, category, counterparty):
     updated_order_json = {
         "order": {
-            "order_number": 100,
+            "order_number": 665,
             "lot_number": "1111",
             "date": "2022-10-14",
-            "position": "Block train",
+            "position": "block_train",
             "type": "import",
             "shipment_status": "delivered",
             "payment_status": "issued",
             "shipper": "LLC \"Gallaorol kaliy fosfat\"",
-            "consignee": "How are you",
+            "consignee": "FE MEDEX",
             "departure_id": departure.id,
             "destination_id": destination.id,
             "border_crossing": "Келес эксп - Сарыагач эксп",
@@ -92,32 +70,10 @@ def test_update_container_order(client, container_order, departure, destination,
             "destination_country": "China",
             "comment": "Hello world",
             "manager": 1,
-            "customer": 1,
-            "counterparties": [
-                {
-                    "id": container_order.order.counterparties.all()[0].id,
-                    "category_id": category.id,
-                    "counterparty_id": counterparty.id
-                }
-
-            ]
+            "customer": 1
         },
         "sending_type": "single",
-        "product_id": product.id,
-
-        "container_types": [
-            {
-                "id": container_order.container_types.all()[0].id,
-                "agreed_rate": "7711.00",
-                "quantity": 10,
-                "container_type": "20HC",
-                "container_preliminary_costs": [
-                    {"id": "3",
-                     "preliminary_cost": "1500.00"
-                     }
-                ]
-            }
-        ]
+        "product_id": product.id
     }
 
     response = client.put(f'/container_order/list/{container_order.order.order_number}/edit/',
