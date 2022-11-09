@@ -56,3 +56,15 @@ class Container(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+
+class Wagon(TimeStampedModel):
+    name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        db_table = 'wagon'
+        verbose_name = 'Wagon'
+        verbose_name_plural = 'Wagons'
+
+    def __str__(self):
+        return self.name

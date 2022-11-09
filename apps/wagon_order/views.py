@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.order.models import WagonOrder, Order
+from apps.wagon_order.serializers.serializers import WagonOrderSerializer
 from apps.wagon_order.serializers.wagon_create import WagonOrderCreateSerializer
 from apps.wagon_order.serializers.wagon_order_list import WagonOrderListSerializer
 from apps.wagon_order.serializers.wagon_update import WagonOrderUpdateSerializer
@@ -23,7 +24,7 @@ class WagonOrderDetail(APIView):
             'order__departure', 'order__destination',
             'product')
 
-        serializer = WagonOrderListSerializer(orders, many=True)
+        serializer = WagonOrderSerializer(orders, many=True)
         return Response(serializer.data)
 
 
@@ -44,8 +45,6 @@ class WagonOrderUpdate(APIView):
         return Response({"Order number": order.order.order_number}, status=status.HTTP_200_OK)
 
 
-#
-#
 class WagonOrderDelete(APIView):
     def delete(self, request, order_number):
         order = get_object_or_404(Order, order_number=order_number)
