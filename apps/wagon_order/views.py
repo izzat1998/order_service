@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.core.utils import add_stations, add_products
 from apps.order.models import WagonOrder, Order
 from apps.wagon_order.serializers.serializers import WagonOrderSerializer
 from apps.wagon_order.serializers.wagon_create import WagonOrderCreateSerializer
@@ -16,7 +17,9 @@ class WagonOrderList(ListAPIView):
     serializer_class = WagonOrderListSerializer
     queryset = WagonOrder.objects.all().select_related('order__departure', 'order__destination',
                                                        'product')
-
+    def get_queryset(self):
+        add_products()
+        add_stations()
 
 class WagonOrderDetail(APIView):
     def get(self, request, order_number):
