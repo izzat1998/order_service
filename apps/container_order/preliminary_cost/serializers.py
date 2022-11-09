@@ -10,7 +10,7 @@ class ContainerPreliminaryCreateSerializer(serializers.Serializer):
     container_type_id = serializers.IntegerField()
 
     def create(self, validated_data):
-        ContainerPreliminaryCost.objects.create(**validated_data)
+        return ContainerPreliminaryCost.objects.create(**validated_data)
 
 
 class ContainerPreliminaryUpdateSerializer(serializers.Serializer):

@@ -53,12 +53,12 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_spectacular',
 
-
     'apps.container_order.apps.ContainerOrderConfig',
     'apps.wagon_order.apps.WagonOrderConfig',
     'apps.counterparty.apps.CounterpartyConfig',
     'apps.order.apps.OrderConfig',
-    'apps.core.apps.CoreConfig'
+    'apps.core.apps.CoreConfig',
+    'apps.statistic.apps.StatisticConfig'
 ]
 
 SPECTACULAR_SETTINGS = {

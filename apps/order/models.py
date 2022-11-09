@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.core.models import TimeStampedModel, Station
+from apps.core.models import TimeStampedModel, Station, Product
 
 
 class Order(TimeStampedModel):
@@ -21,9 +21,9 @@ class Order(TimeStampedModel):
         ('received', 'Received'),
     )
     POSITION_CHOICES = (
-        ('Rail forwarder', 'Rail forwarder'),
-        ('Block train', 'Block train'),
-        ('Multi modal', 'Multi modal'),
+        ('rail_forwarder', 'Rail forwarder'),
+        ('block_train', 'Block train'),
+        ('multi_modal', 'Multi modal'),
     )
     order_number = models.PositiveIntegerField(null=True, unique=True)
     lot_number = models.CharField(blank=True, null=True, max_length=255)
@@ -55,6 +55,10 @@ class Order(TimeStampedModel):
     def __str__(self):
         return str(self.order_number)
 
+    @classmethod
+    def position_count(cls, position_type):
+        return cls.objects.filter(position=position_type).count()
+
     class Meta:
         db_table = 'order'
         verbose_name = 'Order'
@@ -63,9 +67,7 @@ class Order(TimeStampedModel):
 
 class WagonOrder(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='wagon_order')
-    product = models.CharField(max_length=255, blank=True, null=True)
-    gng = models.CharField(max_length=255, blank=True, null=True)
-    etcng = models.CharField(max_length=255, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='wagon_order', null=True)
 
     class Meta:
         db_table = 'wagon_order'

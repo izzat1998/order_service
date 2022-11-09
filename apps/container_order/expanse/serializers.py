@@ -10,17 +10,13 @@ class ContainerActualCostSerializer(serializers.Serializer):
 
 
 class ContainerExpanseCreateSerializer(serializers.Serializer):
-    container = serializers.CharField(source='container.name')
     container_type_id = serializers.IntegerField()
-    expanses = ContainerActualCostSerializer(many=True)
+    actual_costs = ContainerActualCostSerializer(many=True)
 
     def create(self, validated_data):
-        container_name = validated_data.pop('container').pop('name')
-        container, _ = Container.objects.get_or_create(name=container_name)
-        expanse_container = ContainerExpanse.objects.create(container=container,
-                                                            container_type_id=validated_data.pop('container_type_id'))
+        expanse_container = ContainerExpanse.objects.create(container_type_id=validated_data.pop('container_type_id'))
 
-        for expanse in validated_data.pop('expanses'):
+        for expanse in validated_data.pop('actual_costs'):
             ContainerActualCost.objects.create(
                 counterparty_id=expanse.pop('counterparty_id'),
                 actual_cost=expanse.pop('actual_cost'),

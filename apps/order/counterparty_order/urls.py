@@ -1,7 +1,7 @@
 # COUNTERPARTY
 from django.urls import path
 
-from apps.container_order.counterparty_order.views import CounterPartyOrderList, CounterPartyOrderCreate, \
+from apps.order.counterparty_order.views import CounterPartyOrderList, CounterPartyOrderCreate, \
     CounterPartyOrderUpdate, CounterPartyOrderDelete
 
 urlpatterns = [

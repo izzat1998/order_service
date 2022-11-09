@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 from apps.container_order.models import CounterPartyOrder
-from apps.container_order.counterparty_order.serializers import CounterPartyOrderListSerializer, \
+from apps.order.counterparty_order.serializers import CounterPartyOrderListSerializer, \
     CounterPartyOrderCreateSerializer, CounterPartyUpdateSerializer
 
 

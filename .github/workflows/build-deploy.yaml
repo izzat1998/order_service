@@ -67,5 +67,8 @@ jobs:
           script: |
             cd ../home/izzat/order_service
             git pull origin master
+            source /env/bin/activate
+            python manage.py makemigrations
+            python manage.py migrate
             systemctl restart order
             
