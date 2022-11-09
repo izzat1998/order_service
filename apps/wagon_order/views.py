@@ -18,7 +18,6 @@ class WagonOrderList(ListAPIView):
     queryset = WagonOrder.objects.all().select_related('order__departure', 'order__destination',
                                                        'product')
     def get_queryset(self):
-        add_products()
         add_stations()
 
 class WagonOrderDetail(APIView):
