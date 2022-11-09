@@ -4,6 +4,7 @@ from rest_framework.filters import SearchFilter
 from apps.container_order.serializers.serializers import ContainerSerializer
 from apps.core.models import Product, Station, Container
 from apps.core.serializers import ProductSerializer, StationSerializer
+from apps.core.utils import add_products, add_stations
 
 
 # Create your views here.
@@ -28,7 +29,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter]
     search_fields = ['name', 'hc_code', 'etcng_code', 'etcng_name']
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+
+    def get_queryset(self):
+        add_products()
+        add_stations()
+
+
 class StationViewSet(viewsets.ModelViewSet):
     """
     retrieve:
