@@ -36,6 +36,7 @@ class CounterPartyOrder(TimeStampedModel):
     category = models.ForeignKey(CounterpartyCategory, on_delete=models.CASCADE, related_name='counterparty_orders')
 
     class Meta:
+        ordering = ['id']
         unique_together = ('order', 'counterparty', 'category')
         db_table = 'counterparty_order'
         verbose_name = 'Counterparty order'
@@ -95,6 +96,7 @@ class ContainerActualCost(TimeStampedModel):
                                           null=True)
 
     class Meta:
+        ordering = ['counterparty']
         unique_together = ('counterparty', 'container_expanse')
 
 
