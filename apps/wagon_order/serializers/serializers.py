@@ -1,8 +1,15 @@
 from rest_framework import serializers
 
 from apps.container_order.serializers.serializers import CounterPartyOrder
+
 from apps.order.models import Order
 
+
+class WagonPreliminaryCostSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    counterparty = CounterPartyOrder()
+    preliminary_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
+            
 
 class ProductSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -45,3 +52,4 @@ class WagonOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     order = OrderSerializer()
     product = ProductSerializer()
+    wagon_preliminary_costs = WagonPreliminaryCostSerializer(many=True)

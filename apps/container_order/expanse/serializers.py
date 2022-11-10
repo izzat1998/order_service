@@ -14,6 +14,7 @@ class ContainerExpanseCreateSerializer(serializers.Serializer):
     actual_costs = ContainerActualCostSerializer(many=True)
 
     def create(self, validated_data):
+        validated_data.pop('quantity', None)
         expanse_container = ContainerExpanse.objects.create(container_type_id=validated_data.pop('container_type_id'))
 
         for expanse in validated_data.pop('actual_costs'):
