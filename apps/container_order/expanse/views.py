@@ -18,11 +18,11 @@ class ContainerExpanseUpdate(UpdateAPIView):
 
 class CounterpartyAddExpanse(APIView):
     def post(self, request, *args, **kwargs):
-        preliminary_cost = request.POST.get('preliminary_cost')
-        container_type_id = request.POST.get('container_type_id'),
-        counterparty_id = request.POST.get('counterparty_id'),
-        containers_expanse = ContainerExpanse.objects.filter(container_type=container_type_id)
+        preliminary_cost = request.data['preliminary_cost']
+        container_type_id = request.data['container_type_id']
+        counterparty_id = request.data['counterparty_id']
+        containers_expanse = ContainerExpanse.objects.filter(container_type_id=container_type_id)
         for container in containers_expanse:
-            ContainerActualCost.objects.create(containers_expanse=container, preliminary_cost=preliminary_cost,
+            ContainerActualCost.objects.create(container_expanse=container, actual_cost=preliminary_cost,
                                                counterparty_id=counterparty_id)
         return Response(status=201)
