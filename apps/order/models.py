@@ -69,7 +69,7 @@ class WagonOrder(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='wagon_order')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='wagon_order', null=True)
     agreed_rate_pre_tonn = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    weight = models.FloatField(default=60)
+    weight = models.IntegerField(default=60)
     quantity = models.IntegerField(default=0)
 
     class Meta:

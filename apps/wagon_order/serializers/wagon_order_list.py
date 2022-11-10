@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-
 from apps.order.models import Order
 from apps.wagon_order.serializers.serializers import StationSerializer, ProductSerializer
 
@@ -33,3 +32,6 @@ class OrderListSerializer(serializers.Serializer):
 class WagonOrderListSerializer(serializers.Serializer):
     order = OrderListSerializer()
     product = ProductSerializer()
+    agreed_rate_pre_tonn = serializers.DecimalField(max_digits=10, decimal_places=2)
+    weight = serializers.IntegerField()
+    quantity = serializers.IntegerField()
