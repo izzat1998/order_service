@@ -25,6 +25,6 @@ class WagonActualCost(TimeStampedModel):
 
 
 class WagonExpanse(models.Model):
-    actual_weight = models.DecimalField(max_digits=5, decimal_places=2, default=60)
+    actual_weight = models.IntegerField(default=60)
     order = models.ForeignKey(WagonOrder, related_name='expanses', null=True, on_delete=models.SET_NULL)
     wagon = models.ForeignKey(Wagon, related_name='expanses', null=True, on_delete=models.SET_NULL)
