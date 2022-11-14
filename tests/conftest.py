@@ -2,11 +2,13 @@ import datetime
 
 import pytest
 
-from apps.container_order.models import CounterPartyOrder, ContainerOrder, ContainerTypeOrder, ContainerPreliminaryCost
+from apps.container_order.models import ContainerOrder, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost
 from apps.core.models import Product, Station
 from apps.counterparty.models import CounterpartyCategory, Counterparty
 from apps.order.models import Order
 
+
+# Core
 
 @pytest.fixture
 def product(db):
@@ -33,25 +35,15 @@ def category(db):
 
 
 @pytest.fixture
-def category_2(db):
-    category = CounterpartyCategory.objects.create(name='Ocean freight')
-    return category
-
-
-@pytest.fixture
 def counterparty(db):
     counterparty = Counterparty.objects.create(name='Transcontainer')
     return counterparty
 
 
-@pytest.fixture
-def counterparty_2(db):
-    counterparty = Counterparty.objects.create(name='UZJDK')
-    return counterparty
-
+# Container order
 
 @pytest.fixture
-def container_order(db, departure, destination, product, counterparty, category):
+def base_container_order(db, departure, destination):
     order = Order.objects.create(
         order_number=7777,
         lot_number="12345",
@@ -74,23 +66,31 @@ def container_order(db, departure, destination, product, counterparty, category)
         customer=1,
 
     )
-    counterparty_order = CounterPartyOrder.objects.create(counterparty=counterparty, category=category, order=order)
-    container_order = ContainerOrder.objects.create(order=order, product=product,
-                                                    sending_type=ContainerOrder.SENDING_TYPE_CHOICES[0][0])
-    container_type = ContainerTypeOrder.objects.create(agreed_rate="1010.15", quantity=55, container_type='40HC',
-                                                       order=container_order)
+    return order
 
-    ContainerPreliminaryCost.objects.create(counterparty=counterparty_order,
-                                            container_type=container_type,
-                                            preliminary_cost='125.45'
-                                            )
+
+@pytest.fixture
+def container_order(db, base_container_order, product):
+    container_order = ContainerOrder.objects.create(order=base_container_order, product=product,
+                                                    sending_type=ContainerOrder.SENDING_TYPE_CHOICES[0][0])
 
     return container_order
 
 
 @pytest.fixture
-def counterparty_order2(db, container_order, counterparty_2, category_2):
-    counterparty_order = CounterPartyOrder.objects.create(order=container_order.order,
-                                                          counterparty=counterparty_2,
-                                                          category=category_2)
+def container_type(db, container_order):
+    return ContainerTypeOrder.objects.create(agreed_rate='123.12', quantity=10, container_type='40HC',
+                                             order=container_order)
+
+
+@pytest.fixture
+def counterparty_order(base_container_order, counterparty, category):
+    counterparty_order = CounterPartyOrder.objects.create(order=base_container_order, counterparty=counterparty,
+                                                          category=category)
     return counterparty_order
+
+
+@pytest.fixture
+def preliminary_cost(container_type, counterparty_order):
+    return ContainerPreliminaryCost.objects.create(container_type=container_type, counterparty=counterparty_order,
+                                                   preliminary_cost='123.10')

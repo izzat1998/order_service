@@ -18,4 +18,4 @@ class ContainerPreliminaryCostUpdate(UpdateAPIView):
 
 class ContainerPreliminaryCostDelete(DestroyAPIView):
     lookup_field = 'pk'
-    queryset = CounterPartyOrder.objects.all()
+    queryset = ContainerPreliminaryCost.objects.all()

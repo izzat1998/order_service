@@ -24,3 +24,14 @@ class ContainerExpanseCreateSerializer(serializers.Serializer):
                 container_expanse=expanse_container
             )
         return expanse_container
+
+
+class ContainerExpanseUpdateSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    container_name = serializers.CharField(source='container.name')
+
+    def update(self, instance, validated_data):
+        container, _ = Container.objects.get_or_create(name=validated_data.pop("container").pop("name"))
+        instance.container = container
+        instance.save()
+        return instance

@@ -13,7 +13,5 @@ urlpatterns = [
     path('create/', ContainerOrderCreate.as_view(), name='container_order_create'),
     path('preliminary_cost/', include('apps.container_order.preliminary_cost.urls')),
     path('container_type/', include('apps.container_order.container_type.urls')),
-
-
     path('expanse/', include('apps.container_order.expanse.urls'))
 ]
