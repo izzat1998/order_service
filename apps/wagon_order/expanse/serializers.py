@@ -1,20 +1,28 @@
 from rest_framework import serializers
 
-from apps.container_order.models import ContainerExpanse
+from apps.order.models import WagonOrder
+from apps.wagon_order.models import WagonExpanse, WagonActualCost
 
 
-# class WagonExpanseCreateSerializer(serializers.Serializer):
-#     container_type_id = serializers.IntegerField()
-#     actual_costs = ContainerActualCostSerializer(many=True)
-#     actual_weight = serializers.DecimalField(max_digits=)
-#     def create(self, validated_data):
-#         validated_data.pop('quantity', None)
-#         expanse_container = ContainerExpanse.objects.create(container_type_id=validated_data.pop('container_type_id'))
-#
-#         for expanse in validated_data.pop('actual_costs'):
-#             ContainerActualCost.objects.create(
-#                 counterparty_id=expanse.pop('counterparty_id'),
-#                 actual_cost=expanse.pop('actual_cost'),
-#                 container_expanse=expanse_container
-#             )
-#         return expanse_container
+class WagonActualCostCreateSerializer(serializers.Serializer):
+    counterparty_id = serializers.IntegerField()
+    actual_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+
+class WagonExpanseCreateSerializer(serializers.Serializer):
+    order_number = serializers.IntegerField(source='order.order.order_number')
+    actual_weight = serializers.IntegerField(default=60)
+    actual_costs = WagonActualCostCreateSerializer(many=True)
+
+    def create(self, validated_data):
+        order_number = validated_data.pop('order').pop('order').pop('order_number')
+        wagon_order = WagonOrder.objects.filter(order__order_number=order_number).first()
+        expanse_wagon = WagonExpanse.objects.create(order=wagon_order)
+
+        for expanse in validated_data.pop('actual_costs'):
+            WagonActualCost.objects.create(
+                counterparty_id=expanse.pop('counterparty_id'),
+                actual_cost=expanse.pop('actual_cost'),
+                wagon_expanse=expanse_wagon
+            )
+        return expanse_wagon

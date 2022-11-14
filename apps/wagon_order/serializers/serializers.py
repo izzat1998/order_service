@@ -9,7 +9,7 @@ class WagonPreliminaryCostSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     counterparty = CounterPartyOrder()
     preliminary_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
-            
+
 
 class ProductSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
