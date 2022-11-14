@@ -51,6 +51,8 @@ class Order(TimeStampedModel):
     manager = models.IntegerField(blank=True)
     customer = models.IntegerField(blank=True)
     request_file = models.FileField(upload_to='applications/', blank=True, null=True)
+    total_expanse = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return str(self.order_number)
