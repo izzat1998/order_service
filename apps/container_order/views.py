@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,6 +14,8 @@ from apps.order.models import Order
 
 # Create your views here.
 class ContainerOrderList(ListAPIView):
+    search_fields = ['order__order_number', 'order__lot_number', 'order__shipper', 'order__consignee', 'order__date']
+    filter_backends = [SearchFilter]
     serializer_class = ContainerOrderListSerializer
     queryset = ContainerOrder.objects.all().select_related('order__departure', 'order__destination',
                                                            'product')
