@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.core.models import Wagon
 from apps.order.models import WagonOrder
 from apps.wagon_order.models import WagonExpanse, WagonActualCost
 
@@ -26,3 +27,15 @@ class WagonExpanseCreateSerializer(serializers.Serializer):
                 wagon_expanse=expanse_wagon
             )
         return expanse_wagon
+
+
+class WagonExpanseUpdateSerializer(serializers.Serializer):
+    actual_weight = serializers.IntegerField(default=60)
+    wagon_name = serializers.CharField(source='wagon.name')
+
+    def update(self, instance, validated_data):
+        wagon, _ = Wagon.objects.get_or_create(name=validated_data.pop('wagon').pop('name'))
+        instance.actual_weight = validated_data.pop('actual_weight')
+        instance.wagon = wagon
+        instance.save()
+        return instance
