@@ -30,6 +30,10 @@ class ContainerExpanseUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     container_name = serializers.CharField(source='container.name')
 
+    def validate(self, data):
+        if ContainerExpanse.objects.filter(order__order_number=data['container']['name']).exists():
+            raise serializers.ValidationError('Container is already exists')
+
     def update(self, instance, validated_data):
         container, _ = Container.objects.get_or_create(name=validated_data.pop("container").pop("name"))
         instance.container = container
