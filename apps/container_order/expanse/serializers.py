@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from apps.container_order.models import ContainerActualCost, ContainerExpanse
-from apps.core.models import Container
 
 
 class ContainerActualCostSerializer(serializers.Serializer):
@@ -24,19 +23,3 @@ class ContainerExpanseCreateSerializer(serializers.Serializer):
                 container_expanse=expanse_container
             )
         return expanse_container
-
-
-class ContainerExpanseUpdateSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    container_name = serializers.CharField(source='container.name')
-
-    def validate(self, data):
-        if ContainerExpanse.objects.filter(container__name=data['container']['name']).exists():
-            raise serializers.ValidationError({'error': 'Container is already exists'})
-        return data
-
-    def update(self, instance, validated_data):
-        container, _ = Container.objects.get_or_create(name=validated_data.pop("container").pop("name"))
-        instance.container = container
-        instance.save()
-        return instance

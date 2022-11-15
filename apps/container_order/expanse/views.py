@@ -1,9 +1,13 @@
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.container_order.expanse.serializers import ContainerExpanseCreateSerializer, ContainerExpanseUpdateSerializer
+from apps.container_order.expanse.serializers import ContainerExpanseCreateSerializer
 from apps.container_order.models import ContainerExpanse, ContainerActualCost
+from apps.container_order.serializers.serializers import ContainerExpanseSerializer
+from apps.core.models import Container
 
 
 class ContainerExpanseCreate(CreateAPIView):
@@ -11,9 +15,23 @@ class ContainerExpanseCreate(CreateAPIView):
     serializer_class = ContainerExpanseCreateSerializer
 
 
-class ContainerExpanseUpdate(UpdateAPIView):
-    queryset = ContainerExpanse.objects.all()
-    serializer_class = ContainerExpanseUpdateSerializer
+class ContainerExpanseUpdate(APIView):
+    def put(self, request, pk):
+        container_expanse = ContainerExpanse.objects.filter(pk=pk).first()
+        if request.data['container_name'] == '':
+            container_expanse.container = None
+            container_expanse.save()
+            serializer = ContainerExpanseSerializer(container_expanse)
+            return Response({"container": serializer.data.get('container')})
+        else:
+            if ContainerExpanse.objects.filter(container__name=request.data['container_name']).exists():
+                raise serializers.ValidationError({'error': 'Container is already exists'})
+
+            container, _ = Container.objects.get_or_create(name=request.data['container_name'])
+            container_expanse.container = container
+            container_expanse.save()
+            serializer = ContainerExpanseSerializer(container_expanse)
+            return Response({"container": serializer.data.get('container')})
 
 
 class ContainerExpanseDelete(DestroyAPIView):
