@@ -120,16 +120,17 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
                     })
 
         def create_container_types(my_order, my_base_order):
-            quantity = 0
+
             container_type = ContainerTypeOrderCreateSerializer(data=container_type_data, many=True)
             if container_type.is_valid(raise_exception=True):
+
                 for container_type in container_type.data:
-                    quantity = container_type.pop('quantity')
+                    quantity = container_type.get('quantity')
                     container_preliminary_cost_data = container_type.pop('container_preliminary_costs')
                     container_type = ContainerTypeOrder.objects.create(**container_type, order=my_order)
                     create_preliminary_cost(container_preliminary_cost_data, my_base_order, container_type)
 
-            create_expanse(quantity, container_type)
+                    create_expanse(quantity, container_type)
 
         order, base_order = create_container_order(order_data, cont_order_data)
         create_container_types(order, base_order)
