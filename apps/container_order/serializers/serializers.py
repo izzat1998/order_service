@@ -1,6 +1,7 @@
+from django.db.models import Sum
 from rest_framework import serializers
 
-from apps.container_order.models import ContainerTypeOrder, ContainerOrder
+from apps.container_order.models import ContainerTypeOrder, ContainerOrder, ContainerActualCost
 from apps.core.serializers import ContainerSerializer
 from apps.counterparty.serializers import CategorySerializer, CounterpartySerializer
 from apps.order.models import Order
@@ -21,16 +22,18 @@ class StationSerializer(serializers.Serializer):
 
 
 class CounterPartyOrder(serializers.Serializer):
+    total_expanses = serializers.SerializerMethodField('_get_total_expanses')
+
     id = serializers.IntegerField(read_only=True)
     category = CategorySerializer()
     counterparty = CounterpartySerializer()
 
+    def _get_total_expanses(self, obj):
+        return ContainerActualCost.objects.filter(counterparty_id=obj.id).aggregate(total=Sum('actual_cost'))['total']
+
 
 class CounterPartyExpanseOrder(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-
-
-
 
 
 class ContainerActualCostSerializer(serializers.Serializer):
