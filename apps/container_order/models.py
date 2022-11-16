@@ -97,7 +97,7 @@ class ContainerActualCost(TimeStampedModel):
 
     class Meta:
         ordering = ['counterparty']
-        unique_together = ('counterparty', 'container_expanse')
+
 
 
 class ContainerExpanse(TimeStampedModel):
