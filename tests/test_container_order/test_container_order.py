@@ -16,37 +16,37 @@ def test_list_container_order(client, container_order):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_create_container_order(client, departure, destination, product, category, counterparty):
-    order_json = {
-        "order": {
-            "order_number": 15,
-            "lot_number": "1111",
-            "date": "2022-10-14",
-            "position": "block_train",
-            "type": "import",
-            "shipment_status": "delivered",
-            "payment_status": "issued",
-            "shipper": "LLC \"Gallaorol kaliy fosfat\"",
-            "consignee": "FE MEDEX",
-            "departure_id": departure.id,
-            "destination_id": destination.id,
-            "border_crossing": "Келес эксп - Сарыагач эксп",
-            "conditions_of_carriage": "FOB-FOR",
-            "rolling_stock": "СПС контейнер",
-            "departure_country": "Uzbekistan",
-            "destination_country": "China",
-            "comment": "Hello world",
-            "manager": 1,
-            "customer": 1
-        },
-        "sending_type": "single",
-        "product_id": product.id
-    }
-
-    response = client.post('/container_order/create/', data=order_json, content_type='application/json')
-
-    assert response.status_code == 201
+# @pytest.mark.django_db
+# def test_create_container_order(client, departure, destination, product, category, counterparty):
+#     order_json = {
+#         "order": {
+#             "order_number": 15,
+#             "lot_number": "1111",
+#             "date": "2022-10-14",
+#             "position": "block_train",
+#             "type": "import",
+#             "shipment_status": "delivered",
+#             "payment_status": "issued",
+#             "shipper": "LLC \"Gallaorol kaliy fosfat\"",
+#             "consignee": "FE MEDEX",
+#             "departure_id": departure.id,
+#             "destination_id": destination.id,
+#             "border_crossing": "Келес эксп - Сарыагач эксп",
+#             "conditions_of_carriage": "FOB-FOR",
+#             "rolling_stock": "СПС контейнер",
+#             "departure_country": "Uzbekistan",
+#             "destination_country": "China",
+#             "comment": "Hello world",
+#             "manager": 1,
+#             "customer": 1
+#         },
+#         "sending_type": "single",
+#         "product_id": product.id
+#     }
+#
+#     response = client.post('/container_order/create/', data=order_json, content_type='application/json')
+#
+#     assert response.status_code == 201
 
 
 def test_update_container_order(client, container_order, departure, destination, product, category, counterparty):
