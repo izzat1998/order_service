@@ -32,11 +32,8 @@ class CounterPartyOrder(serializers.Serializer):
         return ContainerActualCost.objects.filter(counterparty_id=obj.id).aggregate(total=Sum('actual_cost'))['total']
 
 
-class CounterPartyExpanseOrder(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-
-
 class ContainerActualCostSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     counterparty_id = serializers.IntegerField()
     actual_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
