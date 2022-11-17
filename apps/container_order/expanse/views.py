@@ -4,7 +4,8 @@ from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.container_order.expanse.serializers import ContainerExpanseCreateSerializer
+from apps.container_order.expanse.serializers import ContainerExpanseCreateSerializer, \
+    ContainerActualCostUpdateSerializer
 from apps.container_order.models import ContainerExpanse, ContainerActualCost
 from apps.container_order.serializers.serializers import ContainerExpanseSerializer
 from apps.core.models import Container
@@ -37,6 +38,12 @@ class ContainerExpanseUpdate(APIView):
 class ContainerExpanseDelete(DestroyAPIView):
     lookup_field = 'pk'
     queryset = ContainerExpanse.objects.all()
+
+
+class ContainerActualCostUpdate(UpdateAPIView):
+    lookup_field = 'pk'
+    queryset = ContainerActualCost.objects.all()
+    serializer_class = ContainerActualCostUpdateSerializer
 
 
 class CounterpartyAddExpanse(APIView):
