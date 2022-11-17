@@ -16,6 +16,19 @@ class ContainerExpanseCreate(CreateAPIView):
     serializer_class = ContainerExpanseCreateSerializer
 
 
+class ContainerExpanseUpdateAll(APIView):
+    def put(self, request):
+        container_type_id = request.data['container_type_id']
+        counterparty_id = request.data['counterparty_id']
+        actual_cost = request.data['actual_cost']
+        actual_costs = ContainerActualCost.objects.filter(counterparty_id=counterparty_id,
+                                                          container_expanse__container_type_id=container_type_id)
+        for ac in actual_costs:
+            ac.actual_cost = actual_cost
+            ac.save()
+        return Response(status=200)
+
+
 class ContainerExpanseUpdate(APIView):
     def put(self, request, pk):
         container_expanse = ContainerExpanse.objects.filter(pk=pk).first()
