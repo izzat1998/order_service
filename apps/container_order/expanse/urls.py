@@ -1,7 +1,7 @@
 from django.urls import path
 
 from apps.container_order.expanse.views import ContainerExpanseCreate, CounterpartyAddExpanse, ContainerExpanseUpdate, \
-    ContainerExpanseDelete, ContainerActualCostUpdate, ContainerExpanseUpdateAll
+    ContainerExpanseDelete, ContainerActualCostUpdate, ContainerExpanseUpdateAll, ContainerExpanseContainerAll
 
 urlpatterns = [
     path('create/', ContainerExpanseCreate.as_view(), name='container_expanse_create'),
@@ -13,5 +13,6 @@ urlpatterns = [
          name='container_expanse_actual_cost_update'),
 
     # Custom
-    path('actual_cost_to_all/', ContainerExpanseUpdateAll.as_view(), name='container_expanse_actual_cost_all')
+    path('actual_cost_to_all/', ContainerExpanseUpdateAll.as_view(), name='container_expanse_actual_cost_all'),
+    path('container_to_all/', ContainerExpanseContainerAll.as_view(), name='container_to_all')
 ]

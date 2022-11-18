@@ -99,12 +99,12 @@ class ContainerActualCost(TimeStampedModel):
         ordering = ['counterparty']
 
 
-
 class ContainerExpanse(TimeStampedModel):
     container = models.ForeignKey(Container, on_delete=models.CASCADE, null=True, blank=True)
     container_type = models.ForeignKey(ContainerTypeOrder, related_name='expanses', on_delete=models.CASCADE)
 
     class Meta:
+        ordering = ['-id']
         unique_together = ('container_type', 'container')
         db_table = 'container_expanse'
         verbose_name = 'Container expanse'

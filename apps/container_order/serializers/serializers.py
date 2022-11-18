@@ -21,7 +21,7 @@ class StationSerializer(serializers.Serializer):
     railway_name = serializers.CharField(max_length=255, read_only=True)
 
 
-class CounterPartyOrder(serializers.Serializer):
+class CounterPartyOrderSerializer(serializers.Serializer):
     total_expanses = serializers.SerializerMethodField('_get_total_expanses')
 
     id = serializers.IntegerField(read_only=True)
@@ -46,7 +46,7 @@ class ContainerExpanseSerializer(serializers.Serializer):
 
 class ContainerPreliminaryCost(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    counterparty = CounterPartyOrder()
+    counterparty = CounterPartyOrderSerializer()
     preliminary_cost = serializers.DecimalField(decimal_places=2, max_digits=10)
 
 
@@ -79,7 +79,7 @@ class OrderSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
-    counterparties = CounterPartyOrder(many=True)
+    counterparties = CounterPartyOrderSerializer(many=True)
 
 
 class ContainerOrderSerializer(serializers.Serializer):

@@ -29,6 +29,18 @@ class ContainerExpanseUpdateAll(APIView):
         return Response(status=200)
 
 
+class ContainerExpanseContainerAll(APIView):
+    def put(self, request):
+        container_type_id = request.data['container_type_id']
+        new_containers = request.data['containers']
+        old_containers = ContainerExpanse.objects.filter(container_type_id=container_type_id).order_by('-id')
+        for new_c, old_c in zip(new_containers, old_containers):
+            container, _ = Container.objects.get_or_create(name=new_c)
+            old_c.container = container
+        ContainerExpanse.objects.bulk_update(old_containers, ['container'])
+        return Response(status=200)
+
+
 class ContainerExpanseUpdate(APIView):
     def put(self, request, pk):
         container_expanse = ContainerExpanse.objects.filter(pk=pk).first()

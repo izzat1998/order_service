@@ -1,8 +1,24 @@
 from django.db.models import Q
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
+from apps.container_order.models import CounterPartyOrder
+from apps.container_order.serializers.container_order_create import CounterPartyOrderCreateSerializer
 from apps.core.models import Station, Product
+from apps.core.serializers import WagonSerializer
 from apps.order.models import WagonOrder, Order
+from apps.wagon_order.models import WagonPreliminaryCost, WagonExpanse, WagonActualCost
+
+
+class WagonExpanseCreateSerializer(serializers.Serializer):
+    actual_weight = serializers.IntegerField()
+    wagon = WagonSerializer()
+
+
+class PreliminaryCostCreateSerializer(serializers.Serializer):
+    counterparty_id = serializers.IntegerField()
+    category_id = serializers.IntegerField()
+    preliminary_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class OrderCreateSerializer(serializers.Serializer):
@@ -26,11 +42,15 @@ class OrderCreateSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
+    counterparties = CounterPartyOrderCreateSerializer(many=True)
 
 
 class WagonOrderCreateSerializer(serializers.Serializer):
     order = OrderCreateSerializer()
     product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()
+    weight = serializers.IntegerField()
+    wagon_preliminary_costs = PreliminaryCostCreateSerializer(many=True)
 
     def validate(self, data):
         if WagonOrder.objects.filter(order__order_number=data['order']['order_number']).exists():
@@ -42,8 +62,53 @@ class WagonOrderCreateSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
+        wagon_preliminary_data = validated_data.pop('wagon_preliminary_costs')
         order_data = validated_data.pop('order')
-        base_order = Order.objects.create(**order_data)
-        WagonOrder.objects.create(order=base_order, **validated_data)
+        counterparty_data = order_data.pop('counterparties')
+        wagon_order_data = validated_data
+        quantity = validated_data.get('quantity')
+        counterparties = []
 
+        def create_wagon_order(order_d, container_order_data):
+            base_order = Order.objects.create(**order_d)
+            order = WagonOrder.objects.create(order=base_order, **container_order_data)
+            counterparty = CounterPartyOrderCreateSerializer(data=counterparty_data, many=True)
+            if counterparty.is_valid(raise_exception=True):
+                for counterparty in counterparty.data:
+                    CounterPartyOrder.objects.create(**counterparty, order=base_order)
+            return order, base_order
+
+        def create_expanse(quantity, order):
+            WagonExpanse.objects.create(order=order)
+            for i in range(quantity):
+                wagon_expanse = WagonExpanse.objects.create(order=order)
+                for counterparty in counterparties:
+                    WagonActualCost.objects.create(actual_cost=counterparty['preliminary_cost'],
+                                                   wagon_expanse=wagon_expanse,
+                                                   counterparty_id=counterparty['counterparty'])
+
+        def create_preliminary_cost(wagon_preliminary, parent_order, wagon_order):
+            wagon_preliminary_cost = PreliminaryCostCreateSerializer(
+                data=wagon_preliminary, many=True)
+            if wagon_preliminary_cost.is_valid(raise_exception=True):
+                for preliminary_cost in wagon_preliminary_cost.data:
+                    counterparty = get_object_or_404(CounterPartyOrder, order=parent_order,
+                                                     counterparty_id=preliminary_cost[
+                                                         'counterparty_id'],
+                                                     category_id=preliminary_cost['category_id']
+                                                     )
+                    WagonPreliminaryCost.objects.create(counterparty=counterparty,
+                                                        preliminary_cost=preliminary_cost[
+                                                            'preliminary_cost'],
+
+                                                        order=wagon_order
+                                                        )
+                    counterparties.append({
+                        'counterparty': counterparty.id,
+                        'preliminary_cost': preliminary_cost['preliminary_cost']
+                    })
+
+        order, base_order = create_wagon_order(order_data, wagon_order_data)
+        create_preliminary_cost(wagon_preliminary_data, base_order, order)
+        create_expanse(quantity, order)
         return base_order

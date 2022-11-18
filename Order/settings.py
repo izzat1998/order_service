@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'silk',
 
     'apps.container_order.apps.ContainerOrderConfig',
     'apps.wagon_order.apps.WagonOrderConfig',
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'silk.middleware.SilkyMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 

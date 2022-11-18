@@ -35,3 +35,4 @@ urlpatterns = [
     path('statistic/', include('apps.statistic.urls')),
 
 ]
+urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
