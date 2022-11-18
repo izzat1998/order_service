@@ -24,9 +24,16 @@ class ContainerOrderList(ListAPIView):
 class ContainerOrderDetail(APIView):
     def get(self, request, order_number):
         orders = ContainerOrder.objects.filter(order__order_number=order_number).select_related(
-            'order__departure', 'order__destination',
-            'product').prefetch_related('container_types__expanses__actual_costs',
-                                        'container_types__container_preliminary_costs__counterparty')
+            'order__departure',
+            'order__destination',
+            'product').prefetch_related('container_types__container_preliminary_costs__counterparty__category',
+                                        'container_types__container_preliminary_costs__counterparty__counterparty',
+                                        'container_types__expanses__actual_costs__counterparty__counterparty',
+                                        'container_types__expanses__actual_costs__counterparty__category',
+                                        'container_types__expanses__container',
+                                        'order__counterparties__category',
+                                        'order__counterparties__counterparty'
+                                        )
         serializer = ContainerOrderSerializer(orders, many=True)
         return Response(serializer.data)
 

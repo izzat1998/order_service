@@ -22,6 +22,12 @@ class StationSerializer(serializers.Serializer):
 
 
 class CounterPartyOrderSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    category = CategorySerializer()
+    counterparty = CounterpartySerializer()
+
+
+class CounterPartyOrderTotalExpanseSerializer(serializers.Serializer):
     total_expanses = serializers.SerializerMethodField('_get_total_expanses')
 
     id = serializers.IntegerField(read_only=True)
@@ -79,7 +85,7 @@ class OrderSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
-    counterparties = CounterPartyOrderSerializer(many=True)
+    counterparties = CounterPartyOrderTotalExpanseSerializer(many=True)
 
 
 class ContainerOrderSerializer(serializers.Serializer):
