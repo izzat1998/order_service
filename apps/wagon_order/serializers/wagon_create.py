@@ -79,7 +79,6 @@ class WagonOrderCreateSerializer(serializers.Serializer):
             return order, base_order
 
         def create_expanse(quantity, order):
-            WagonExpanse.objects.create(order=order)
             for i in range(quantity):
                 wagon_expanse = WagonExpanse.objects.create(order=order)
                 for counterparty in counterparties:
