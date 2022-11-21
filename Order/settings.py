@@ -27,7 +27,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['order.interrail.uz', '127.0.0.1']
+ALLOWED_HOSTS = ['order.interrail.uz', '127.0.0.1', '178.62.91.121']
 
 CORS_ORIGIN_ALLOW_ALL = True
 INTERNAL_IPS = [
