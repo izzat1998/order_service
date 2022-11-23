@@ -68,7 +68,6 @@ class Order(TimeStampedModel):
 class WagonOrder(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='wagon_order')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='wagon_order', null=True)
-
     weight = models.IntegerField(default=60)
     quantity = models.IntegerField(default=0)
 

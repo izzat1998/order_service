@@ -25,7 +25,7 @@ class WagonActualCost(TimeStampedModel):
 
 
 class WagonExpanse(models.Model):
-
+    agreed_rate_per_tonn = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     actual_weight = models.IntegerField(default=60)
     order = models.ForeignKey(WagonOrder, related_name='expanses', null=True, on_delete=models.SET_NULL)
     wagon = models.ForeignKey(Wagon, related_name='expanses', null=True, on_delete=models.SET_NULL)

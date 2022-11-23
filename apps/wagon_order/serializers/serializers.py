@@ -13,6 +13,7 @@ class WagonCounterPartyOrderSerializer(serializers.Serializer):
 
 
 class WagonActualCost(serializers.Serializer):
+    agreed_rate_per_tonn = serializers.DecimalField(max_digits=10, decimal_places=2)
     counterparty = WagonCounterPartyOrderSerializer()
     actual_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
 
@@ -72,4 +73,3 @@ class WagonOrderSerializer(serializers.Serializer):
     product = ProductSerializer()
     wagon_preliminary_costs = WagonPreliminaryCostSerializer(many=True)
     expanses = WagonExpanseSerializer(many=True)
-    agreed_rate_per_tonn = serializers.DecimalField(decimal_places=2, max_digits=10)
