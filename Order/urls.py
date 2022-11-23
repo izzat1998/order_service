@@ -32,6 +32,7 @@ urlpatterns = [
     path('order/', include('apps.order.urls')),
     path('container_order/', include('apps.container_order.urls')),
     path('wagon_order/', include('apps.wagon_order.urls')),
+    path('wagon_empty_order/', include('apps.wagon_empty_order.urls')),
     path('statistic/', include('apps.statistic.urls')),
 
 ]

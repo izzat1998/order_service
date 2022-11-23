@@ -89,6 +89,8 @@ class WagonOrder(models.Model):
 
 class WagonEmptyOrder(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='empty_wagon_order')
+    quantity = models.IntegerField(default=1)
+    agreed_rate = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         db_table = 'wagon_empty_order'
