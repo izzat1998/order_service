@@ -22,7 +22,14 @@ class WagonOrderDetail(APIView):
     def get(self, request, order_number):
         orders = WagonOrder.objects.filter(order__order_number=order_number).select_related(
             'order__departure', 'order__destination',
-            'product')
+            'product').prefetch_related('order__counterparties__category',
+                                        'order__counterparties__counterparty',
+                                        'wagon_preliminary_costs__counterparty__counterparty',
+                                        'wagon_preliminary_costs__counterparty__category',
+                                        'expanses__actual_costs__counterparty__counterparty',
+                                        'expanses__actual_costs__counterparty__category',
+                                        'expanses__wagon'
+                                        )
 
         serializer = WagonOrderSerializer(orders, many=True)
         return Response(serializer.data)
