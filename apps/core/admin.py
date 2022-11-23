@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.core.models import Product, Station, Container
+from apps.core.models import Product, Station, Container, Wagon
 
 
 # Register your models here.
@@ -24,3 +24,10 @@ class ContainerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Container, ContainerAdmin)
+
+
+class WagonAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+admin.site.register(Wagon, WagonAdmin)
