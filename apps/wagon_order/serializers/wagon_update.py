@@ -6,7 +6,6 @@ from apps.order.models import WagonOrder, Order
 
 class OrderUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    order_number = serializers.IntegerField()
     lot_number = serializers.CharField(max_length=255)
     date = serializers.DateField()
     position = serializers.ChoiceField(choices=Order.POSITION_CHOICES)
