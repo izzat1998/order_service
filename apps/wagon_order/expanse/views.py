@@ -18,8 +18,6 @@ class WagonExpanseUpdate(APIView):
         wagon_expanse = WagonExpanse.objects.filter(pk=pk).select_related('wagon').first()
         if 'wagon_name' in request.data and request.data['wagon_name'] == '':
             wagon_expanse.wagon = None
-            wagon_expanse.save()
-
         if 'wagon_name' in request.data:
             if WagonExpanse.objects.filter(wagon__name=request.data['wagon_name']).exists():
                 raise serializers.ValidationError({'error': 'Wagon is already exists'})
@@ -30,8 +28,9 @@ class WagonExpanseUpdate(APIView):
         if 'actual_weight' in request.data:
             wagon_expanse.actual_weight = request.data['actual_weight']
         wagon_expanse.save()
+
         data = {
-            'wagon_name': wagon_expanse.wagon.name,
+            'wagon_name': wagon_expanse.wagon.name if wagon_expanse.wagon else '',
             'agreed_rate_per_tonn': wagon_expanse.agreed_rate_per_tonn,
             'actual_weight': wagon_expanse.actual_weight,
         }
