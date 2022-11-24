@@ -18,13 +18,12 @@ class WagonExpanseUpdate(APIView):
     def put(self, request, pk):
         wagon_expanse = WagonExpanse.objects.filter(pk=pk).select_related('wagon').first()
         if 'wagon_name' in request.data and request.data['wagon_name'] == '':
-            if WagonExpanse.objects.filter(wagon__name=request.data['wagon_name']).exists():
-                raise serializers.ValidationError({'error': 'Wagon is already exists'})
             wagon_expanse.wagon = None
             wagon_expanse.save()
-            serializer = WagonExpanseSerializer(wagon_expanse)
-            return Response(serializer.data)
-        elif 'wagon_name' in request.data:
+
+        if 'wagon_name' in request.data:
+            if WagonExpanse.objects.filter(wagon__name=request.data['wagon_name']).exists():
+                raise serializers.ValidationError({'error': 'Wagon is already exists'})
             wagon, _ = Wagon.objects.get_or_create(name=request.data['wagon_name'])
             wagon_expanse.wagon = wagon
         if 'agreed_rate_per_tonn' in request.data:

@@ -62,6 +62,7 @@ class WagonOrderCreateSerializer(serializers.Serializer):
         counterparty_data = order_data.pop('counterparties')
         wagon_order_data = validated_data
         quantity = validated_data.get('quantity')
+        agreed_rate_per_tonn = validated_data.get('agreed_rate_per_tonn')
         counterparties = []
 
         def create_wagon_order(order_d, container_order_data):
@@ -75,7 +76,7 @@ class WagonOrderCreateSerializer(serializers.Serializer):
 
         def create_expanse(quantity, order):
             for i in range(quantity):
-                wagon_expanse = WagonExpanse.objects.create(order=order)
+                wagon_expanse = WagonExpanse.objects.create(order=order, agreed_rate_per_tonn=agreed_rate_per_tonn)
                 for counterparty in counterparties:
                     WagonActualCost.objects.create(actual_cost=counterparty['preliminary_cost'],
                                                    wagon_expanse=wagon_expanse,
