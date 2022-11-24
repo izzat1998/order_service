@@ -25,12 +25,10 @@ class WagonExpanseUpdate(APIView):
         elif 'wagon_name' in request.data:
             wagon, _ = Wagon.objects.get_or_create(name=request.data['wagon_name'])
             wagon_expanse.wagon = wagon
-            wagon_expanse.save()
         if 'agreed_rate_per_tonn' in request.data:
             wagon_expanse.agreed_rate_per_tonn = request.data['agreed_rate_per_tonn']
-            wagon_expanse.save()
         if 'actual_weight' in request.data:
             wagon_expanse.actual_weight = request.data['actual_weight']
-            wagon_expanse.save()
+        wagon_expanse.save()
         serializer = WagonExpanseSerializer(wagon_expanse)
         return Response(serializer.data)
