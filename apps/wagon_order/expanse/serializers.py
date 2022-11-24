@@ -31,11 +31,6 @@ class WagonExpanseCreateSerializer(serializers.Serializer):
 
 class WagonExpanseUpdateSerializer(serializers.Serializer):
     actual_weight = serializers.IntegerField(default=60)
+    agreed_rate_per_tonn = serializers.DecimalField(decimal_places=2, max_digits=10)
     wagon_name = serializers.CharField(source='wagon.name')
 
-    def update(self, instance, validated_data):
-        wagon, _ = Wagon.objects.get_or_create(name=validated_data.pop('wagon').pop('name'))
-        instance.actual_weight = validated_data.pop('actual_weight')
-        instance.wagon = wagon
-        instance.save()
-        return instance

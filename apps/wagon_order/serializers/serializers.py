@@ -18,6 +18,7 @@ class WagonActualCost(serializers.Serializer):
 
 
 class WagonExpanseSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     agreed_rate_per_tonn = serializers.DecimalField(max_digits=10, decimal_places=2)
     actual_weight = serializers.IntegerField()
     wagon = WagonSerializer()
