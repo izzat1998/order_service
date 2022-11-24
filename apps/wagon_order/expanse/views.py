@@ -13,6 +13,18 @@ class WagonExpanseCreate(CreateAPIView):
     queryset = WagonExpanse.objects.all()
 
 
+class WagonExpanseWagonAll(APIView):
+    def put(self, request):
+        order_number = request.data['order_number']
+        new_wagons = request.data['wagon']
+        old_wagons = WagonExpanse.objects.filter(order__order__order_number=order_number).order_by('-id')
+        for new_w, old_w in zip(new_wagons, old_wagons):
+            wagon, _ = Wagon.objects.get_or_create(name=new_w)
+            old_w.wagon = wagon
+        WagonExpanse.objects.bulk_update(old_wagons, ['wagon'])
+        return Response(status=200)
+
+
 class WagonExpanseUpdate(APIView):
     def put(self, request, pk):
         wagon_expanse = WagonExpanse.objects.filter(pk=pk).select_related('wagon').first()
