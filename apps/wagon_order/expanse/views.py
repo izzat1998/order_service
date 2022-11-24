@@ -16,7 +16,7 @@ class WagonExpanseCreate(CreateAPIView):
 
 class WagonExpanseUpdate(APIView):
     def put(self, request, pk):
-        wagon_expanse = WagonExpanse.objects.filter(pk=pk).first()
+        wagon_expanse = WagonExpanse.objects.filter(pk=pk).select_related('wagon').first()
         if 'wagon_name' in request.data and request.data['wagon_name'] == '':
             wagon_expanse.wagon = None
             wagon_expanse.save()
