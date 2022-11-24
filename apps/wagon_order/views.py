@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
@@ -44,6 +45,7 @@ class WagonOrderCreate(APIView):
 
 
 class WagonOrderUpdate(APIView):
+    @extend_schema(request=None, responses=WagonOrderUpdateSerializer)
     def put(self, request, order_number):
         order = get_object_or_404(WagonOrder, order__order_number=order_number)
         serializer = WagonOrderUpdateSerializer(order, data=request.data, partial=True)

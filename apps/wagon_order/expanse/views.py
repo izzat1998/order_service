@@ -4,9 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.core.models import Wagon
-from apps.wagon_order.expanse.serializers import WagonExpanseCreateSerializer
-from apps.wagon_order.models import WagonExpanse
-from apps.wagon_order.serializers.serializers import WagonExpanseSerializer
+from apps.wagon_order.expanse.serializers import WagonExpanseCreateSerializer, WagonActualCostUpdateSerializer
+from apps.wagon_order.models import WagonExpanse, WagonActualCost
 
 
 class WagonExpanseCreate(CreateAPIView):
@@ -37,3 +36,9 @@ class WagonExpanseUpdate(APIView):
             'actual_weight': wagon_expanse.actual_weight,
         }
         return Response(data)
+
+
+class WagonActualCostUpdate(UpdateAPIView):
+    lookup_field = 'pk'
+    queryset = WagonActualCost.objects.all()
+    serializer_class = WagonActualCostUpdateSerializer

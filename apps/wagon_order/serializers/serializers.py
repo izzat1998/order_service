@@ -13,6 +13,7 @@ class WagonCounterPartyOrderSerializer(serializers.Serializer):
 
 
 class WagonActualCost(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     counterparty = WagonCounterPartyOrderSerializer()
     actual_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
 
