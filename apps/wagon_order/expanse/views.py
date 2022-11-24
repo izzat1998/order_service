@@ -18,7 +18,8 @@ class WagonExpanseUpdate(APIView):
         wagon_expanse = WagonExpanse.objects.filter(pk=pk).select_related('wagon').first()
         if 'wagon_name' in request.data and request.data['wagon_name'] == '':
             wagon_expanse.wagon = None
-        if 'wagon_name' in request.data:
+
+        elif 'wagon_name' in request.data:
             if WagonExpanse.objects.filter(wagon__name=request.data['wagon_name']).exists():
                 raise serializers.ValidationError({'error': 'Wagon is already exists'})
             wagon, _ = Wagon.objects.get_or_create(name=request.data['wagon_name'])
