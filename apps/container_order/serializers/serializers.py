@@ -86,8 +86,6 @@ class OrderSerializer(serializers.Serializer):
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
     counterparties = CounterPartyOrderTotalExpanseSerializer(many=True)
-
-
 class ContainerOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     order = OrderSerializer()
