@@ -58,6 +58,7 @@ class ContainerOrderUpdateSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         order_data = validated_data.pop('order')
         instance.order.lot_number = order_data.pop('lot_number')
+        instance.order.date = order_data.pop('date')
         instance.order.position = order_data.pop('position')
         instance.order.type = order_data.pop('type')
         instance.order.shipment_status = order_data.pop('shipment_status')
