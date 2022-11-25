@@ -43,6 +43,7 @@ class WagonOrderUpdateSerializer(serializers.Serializer):
         order_data = validated_data.pop('order')
         instance.order.lot_number = order_data.pop('lot_number')
         instance.order.position = order_data.pop('position')
+        instance.order.date = order_data.pop('date')
         instance.order.type = order_data.pop('type')
         instance.order.shipment_status = order_data.pop('shipment_status')
         instance.order.payment_status = order_data.pop('payment_status')
@@ -59,6 +60,7 @@ class WagonOrderUpdateSerializer(serializers.Serializer):
         instance.order.manager = order_data.pop('manager')
         instance.order.customer = order_data.pop('customer')
         instance.quantity = validated_data.pop('quantity')
+        instance.product = validated_data.pop('product_id')
         instance.order.save()
         instance.save()
         return instance
