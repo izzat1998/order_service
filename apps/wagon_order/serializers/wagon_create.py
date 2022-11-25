@@ -45,6 +45,7 @@ class WagonOrderCreateSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
     weight = serializers.IntegerField()
+    agreed_rate_per_tonn = serializers.DecimalField(max_digits=10, decimal_places=2)
     wagon_preliminary_costs = PreliminaryCostCreateSerializer(many=True)
 
     def validate(self, data):
@@ -62,12 +63,12 @@ class WagonOrderCreateSerializer(serializers.Serializer):
         counterparty_data = order_data.pop('counterparties')
         wagon_order_data = validated_data
         quantity = validated_data.get('quantity')
-        agreed_rate_per_tonn = validated_data.get('agreed_rate_per_tonn')
+        agreed_rate_per_tonn = validated_data.pop('agreed_rate_per_tonn')
         counterparties = []
 
-        def create_wagon_order(order_d, container_order_data):
+        def create_wagon_order(order_d, wagon_data):
             base_order = Order.objects.create(**order_d)
-            order = WagonOrder.objects.create(order=base_order, **container_order_data)
+            order = WagonOrder.objects.create(order=base_order, **wagon_data)
             counterparty = CounterPartyOrderCreateSerializer(data=counterparty_data, many=True)
             if counterparty.is_valid(raise_exception=True):
                 for counterparty in counterparty.data:
