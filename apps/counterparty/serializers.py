@@ -30,7 +30,7 @@ class CounterpartySerializer(serializers.Serializer):
 
     def validate(self, data):
         if Counterparty.objects.filter(name=data['name']).exists():
-            raise serializers.ValidationError('Category with this name already exists')
+            raise serializers.ValidationError('Counterparty with this name already exists')
         return data
 
     def update(self, instance, validated_data):
