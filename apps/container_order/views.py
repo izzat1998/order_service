@@ -18,7 +18,7 @@ class ContainerOrderList(ListAPIView):
     filter_backends = [SearchFilter]
     serializer_class = ContainerOrderListSerializer
     queryset = ContainerOrder.objects.all().select_related('order__departure', 'order__destination',
-                                                           'product')
+                                                           'product').order_by('-order__order_number')
 
 
 class ContainerOrderDetail(APIView):
