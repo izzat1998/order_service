@@ -10,6 +10,11 @@ class ProductSerializer(serializers.Serializer):
     etcng_code = serializers.IntegerField(required=True)
     etcng_name = serializers.CharField()
 
+    def validate(self, data):
+        if Product.objects.filter(name=data['name'], etcng_code=data['etcng_code'], hc_code=data['hc_code']).exists():
+            raise serializers.ValidationError('Product  already exists')
+        return data
+
     def create(self, validated_data):
         return Product.objects.create(**validated_data)
 
@@ -30,6 +35,11 @@ class StationSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Station.objects.create(**validated_data)
+
+    def validate(self, data):
+        if Station.objects.filter(name=data['name'], code=data['code']).exists():
+            raise serializers.ValidationError('Station  already exists')
+        return data
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name")
