@@ -13,7 +13,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = CounterpartyCategory.objects.all()
 
 
-
 class CounterpartyViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ['name']
