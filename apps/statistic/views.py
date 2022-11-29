@@ -19,8 +19,6 @@ class OrderStatistic(APIView):
             agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
                             wagons_count=Count('id'))
         )
-
-        monthly = {'monthly': monthly_orders}
         container = {
             'type': "ContainerOrder",
             'stat': container_orders
@@ -36,7 +34,7 @@ class OrderStatistic(APIView):
         #     'multi_modal_count': Order.position_count(Order.POSITION_CHOICES[2][0])
         # }
 
-        return Response([container, wagon, monthly])
+        return Response([container, wagon])
 
 
 class OrderStatisticMonthly(APIView):
