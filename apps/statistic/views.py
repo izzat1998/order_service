@@ -1,4 +1,4 @@
-from django.db.models import Count, Sum, Case, When
+from django.db.models import Count, Sum, Case, When, F
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,7 +14,7 @@ class OrderStatistic(APIView):
             agreed_rate=Sum('container_types__expanses__agreed_rate')
         ).all()
         wagon_orders = WagonOrder.objects.order_by('order__position').values('order__position').annotate(
-            agreed_rate=Sum('expanses__agreed_rate')
+            agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'))
         ).all()
         statistic_data = {
             'container_orders': container_orders,
