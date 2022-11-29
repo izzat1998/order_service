@@ -35,7 +35,7 @@ admin.site.register(ContainerPreliminaryCost, ContainerPreliminaryCostAdmin)
 
 
 class ContainerExpanseAdmin(admin.ModelAdmin):
-    list_display = ('container_type', 'container')
+    list_display = ('container_type', 'container', 'agreed_rate')
 
 
 admin.site.register(ContainerExpanse, ContainerExpanseAdmin)
