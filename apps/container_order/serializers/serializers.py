@@ -46,6 +46,7 @@ class ContainerActualCostSerializer(serializers.Serializer):
 
 class ContainerExpanseSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    agreed_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
     container = ContainerSerializer()
     actual_costs = ContainerActualCostSerializer(many=True)
 
@@ -86,6 +87,8 @@ class OrderSerializer(serializers.Serializer):
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
     counterparties = CounterPartyOrderTotalExpanseSerializer(many=True)
+
+
 class ContainerOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     order = OrderSerializer()

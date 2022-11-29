@@ -7,9 +7,12 @@ from apps.container_order.models import ContainerOrder
 
 # Create your views here.
 
-
 class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
+        container_orders = ContainerOrder.objects.order_by('order__position').values('order__position').annotate(
+            agreed_rate=Sum(field='container_types__agreed_rate')
+        ).all()
+
         statistic_data = {
             'container_orders': container_orders,
         }

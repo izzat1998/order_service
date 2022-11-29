@@ -90,9 +90,9 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
                     CounterPartyOrder.objects.create(**counterparty, order=base_order)
             return order, base_order
 
-        def create_expanse(quant, cntr_type):
+        def create_expanse(quant, cntr_type, agreed_rate):
             for i in range(quant):
-                container_expanse = ContainerExpanse.objects.create(container_type=cntr_type)
+                container_expanse = ContainerExpanse.objects.create(container_type=cntr_type, agreed_rate=agreed_rate)
                 for counterparty in counterparties:
                     ContainerActualCost.objects.create(container_expanse=container_expanse,
                                                        actual_cost=counterparty['preliminary_cost'],
@@ -126,10 +126,11 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
 
                 for container_type in container_type.data:
                     quantity = container_type.get('quantity')
+                    agreed_rate = container_type.get('agreed_rate')
                     container_preliminary_cost_data = container_type.pop('container_preliminary_costs')
                     container_type = ContainerTypeOrder.objects.create(**container_type, order=my_order)
                     create_preliminary_cost(container_preliminary_cost_data, my_base_order, container_type)
-                    create_expanse(quantity, container_type)
+                    create_expanse(quantity, container_type, agreed_rate)
                     counter_parties.clear()
 
         order, base_order = create_container_order(order_data, cont_order_data)

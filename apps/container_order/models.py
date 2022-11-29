@@ -7,7 +7,7 @@ from apps.order.models import Order
 
 # Create your models here.
 class ContainerOrder(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='container_order')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='я')
     SENDING_TYPE_CHOICES = (
         ('single', 'Single'),
         ('block_train', 'Block train')
@@ -100,6 +100,7 @@ class ContainerActualCost(TimeStampedModel):
 
 
 class ContainerExpanse(TimeStampedModel):
+    agreed_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     container = models.ForeignKey(Container, on_delete=models.CASCADE, null=True, blank=True)
     container_type = models.ForeignKey(ContainerTypeOrder, related_name='expanses', on_delete=models.CASCADE)
 
