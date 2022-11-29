@@ -10,7 +10,7 @@ from apps.container_order.models import ContainerOrder
 class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
         container_orders = ContainerOrder.objects.order_by('order__position').values('order__position').annotate(
-            agreed_rate=Sum(field='container_types__agreed_rate')
+            agreed_rate=Sum('container_types__expanses__agreed_rate')
         ).all()
 
         statistic_data = {
