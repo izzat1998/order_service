@@ -19,9 +19,7 @@ class OrderStatistic(APIView):
             agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
                             wagons_count=Count('id'))
         )
-        monthly_orders = Order.objects.annotate(month=ExtractMonth('date'),
-                                                year=ExtractYear('date')).order_by().values('month', 'year').annotate(
-            total=Count('*')).values('month', 'year', 'total')
+
         monthly = {'monthly': monthly_orders}
         container = {
             'type': "ContainerOrder",
@@ -39,3 +37,12 @@ class OrderStatistic(APIView):
         # }
 
         return Response([container, wagon, monthly])
+
+
+class OrderStatisticMonthly(APIView):
+    def get(self, request, *args, **kwargs):
+        monthly_orders = Order.objects.annotate(month=ExtractMonth('date'),
+                                                year=ExtractYear('date')).order_by().values('month', 'year').annotate(
+            total=Count('*')).values('month', 'year', 'total')
+
+        return Response({'monthly_orders': monthly_orders})
