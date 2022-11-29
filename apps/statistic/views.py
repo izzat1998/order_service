@@ -1,9 +1,10 @@
 from django.db.models import Count, Sum, Case, When, F
+from django.db.models.functions import TruncMonth, ExtractMonth, ExtractYear
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.container_order.models import ContainerOrder
-from apps.order.models import WagonOrder
+from apps.order.models import WagonOrder, Order
 
 
 # Create your views here.
@@ -18,7 +19,10 @@ class OrderStatistic(APIView):
             agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
                             wagons_count=Count('id'))
         )
-
+        monthly_orders = Order.objects.annotate(month=ExtractMonth('date'),
+                                                year=ExtractYear('date')).order_by().values('month', 'year').annotate(
+            total=Count('*')).values('month', 'year', 'total')
+        monthly = {'monthly': monthly_orders}
         container = {
             'type': "ContainerOrder",
             'stat': container_orders
@@ -34,4 +38,4 @@ class OrderStatistic(APIView):
         #     'multi_modal_count': Order.position_count(Order.POSITION_CHOICES[2][0])
         # }
 
-        return Response([container, wagon])
+        return Response([container, wagon, monthly])
