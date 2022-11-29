@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.container_order.models import ContainerOrder
+from apps.order.models import WagonOrder
 
 
 # Create your views here.
@@ -12,9 +13,12 @@ class OrderStatistic(APIView):
         container_orders = ContainerOrder.objects.order_by('order__position').values('order__position').annotate(
             agreed_rate=Sum('container_types__expanses__agreed_rate')
         ).all()
-
+        wagon_orders = WagonOrder.objects.order_by('order__position').values('order__position').annotate(
+            agreed_rate=Sum('expanses__agreed_rate')
+        ).all()
         statistic_data = {
             'container_orders': container_orders,
+            'wagon_orders': wagon_orders,
         }
 
         # statistic = {
