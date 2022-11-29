@@ -3,7 +3,7 @@ from django.db.models.functions import TruncMonth, ExtractMonth, ExtractYear
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.container_order.models import ContainerOrder
+from apps.container_order.models import ContainerOrder, ContainerExpanse
 from apps.order.models import WagonOrder, Order
 
 
@@ -19,6 +19,7 @@ class OrderStatistic(APIView):
             agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
                             wagons_count=Count('id'))
         )
+
         container = {
             'type': "ContainerOrder",
             'stat': container_orders
@@ -40,7 +41,18 @@ class OrderStatistic(APIView):
 class OrderStatisticMonthly(APIView):
     def get(self, request, *args, **kwargs):
         monthly_orders = Order.objects.annotate(month=ExtractMonth('date'),
-                                                year=ExtractYear('date')).order_by().values('month', 'year').annotate(
+                                                year=ExtractYear('date')).values('month', 'year').annotate(
             total=Count('*')).values('month', 'year', 'total')
 
-        return Response({'monthly_orders': monthly_orders})
+        container_expanses = ContainerExpanse.objects.annotate(month=ExtractMonth('container_type__order__order__date'),
+                                                               year=ExtractYear(
+                                                                   'container_type__order__order__date')).values(
+            'month',
+            'year').annotate(
+            total_agreed_rate=Sum('agreed_rate')).values('month', 'year', 'total_agreed_rate')
+
+        return Response({'monthly_orders': monthly_orders,
+                         'monthly_agreed_rate': container_expanses
+                         }
+
+                        )
