@@ -11,10 +11,12 @@ from apps.order.models import WagonOrder
 class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
         container_orders = ContainerOrder.objects.order_by('order__position').values('order__position').annotate(
-            agreed_rate=Sum('container_types__expanses__agreed_rate')
+            agreed_rate=Sum('container_types__expanses__agreed_rate'),
+            containers_count=Count('id')
         )
         wagon_orders = WagonOrder.objects.order_by('order__position').values('order__position').annotate(
-            agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'))
+            agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
+                            wagons_count=Count('id'))
         )
 
         container = {
