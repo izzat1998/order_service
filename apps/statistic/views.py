@@ -54,5 +54,10 @@ class OrderStatisticMonthly(APIView):
         return Response({'monthly_orders': monthly_orders,
                          'monthly_agreed_rate': container_expanses
                          }
-
                         )
+
+
+class OrderStatisticByUser(APIView):
+    def get(self, request):
+        orders = Order.objects.order_by('manager').values('manager').annotate(count=Count('id'))
+        return Response({'user_orders': orders})
