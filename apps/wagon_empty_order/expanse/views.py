@@ -1,9 +1,13 @@
+from django.contrib.admin.utils import lookup_field
+from django.views.generic import UpdateView
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.core.models import Wagon
-from apps.wagon_empty_order.models import WagonEmptyExpanse
+from apps.wagon_empty_order.expanse.serializers import WagonEmptyActualCostUpdateSerializer
+from apps.wagon_empty_order.models import WagonEmptyExpanse, WagonEmptyActualCost
+from apps.wagon_empty_order.serializers.serializers import WagonEmptyActualCostSerializer
 
 
 class WagonEmptyExpanseUpdate(APIView):
@@ -28,3 +32,9 @@ class WagonEmptyExpanseUpdate(APIView):
             'agreed_rate': wagon_empty_expanse.agreed_rate,
         }
         return Response(data)
+
+
+class WagonEmptyActualCostUpdate(UpdateView):
+    lookup_field = 'pk'
+    model = WagonEmptyActualCost
+    serializer_class = WagonEmptyActualCostUpdateSerializer
