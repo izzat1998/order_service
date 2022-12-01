@@ -37,5 +37,5 @@ class WagonEmptyExpanseUpdate(APIView):
 
 class WagonEmptyActualCostUpdate(UpdateAPIView):
     lookup_field = 'pk'
-    model = WagonEmptyActualCost
+    queryset = WagonEmptyActualCost.objects.all()
     serializer_class = WagonEmptyActualCostUpdateSerializer
