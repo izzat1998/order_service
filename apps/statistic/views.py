@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.container_order.models import ContainerOrder, ContainerExpanse
-from apps.order.models import WagonOrder, Order
+from apps.order.models import WagonOrder, Order, WagonEmptyOrder
 
 
 # Create your views here.
@@ -19,7 +19,8 @@ class OrderStatistic(APIView):
             agreed_rate=Sum(F('expanses__agreed_rate_per_tonn') * F('expanses__actual_weight'),
                             wagons_count=Count('id'))
         )
-
+        empty_wagon_orders = WagonEmptyOrder.objects.order_by('order__position').values('order__position').annotate(
+            agreed_rate=Sum(F('expanses__agreed_rate'), wagons_count=Count('id')))
         container = {
             'type': "ContainerOrder",
             'stat': container_orders
@@ -28,6 +29,10 @@ class OrderStatistic(APIView):
             'type': "WagonOrder",
             'stat': wagon_orders
         }
+        empty_wagon = {
+            'type': "WagonEmptyOrder",
+            'stat': empty_wagon_orders
+        }
 
         # statistic = {
         #     'rail_forwarder_count': Order.position_count(Order.POSITION_CHOICES[0][0]),
@@ -35,7 +40,7 @@ class OrderStatistic(APIView):
         #     'multi_modal_count': Order.position_count(Order.POSITION_CHOICES[2][0])
         # }
 
-        return Response([container, wagon])
+        return Response([container, wagon, empty_wagon])
 
 
 class OrderStatisticMonthly(APIView):
