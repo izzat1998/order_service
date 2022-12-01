@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from apps.core.models import Wagon
 from apps.order.models import WagonOrder
 from apps.wagon_order.models import WagonExpanse, WagonActualCost
 

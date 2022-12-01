@@ -18,6 +18,7 @@ class WagonEmptyActualCostSerializer(serializers.Serializer):
 
 
 class WagonEmptyExpanseSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     wagon = WagonSerializer()
     actual_costs = WagonEmptyActualCostSerializer(many=True)
     agreed_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
