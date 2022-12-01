@@ -25,7 +25,14 @@ class WagonEmptyOrderList(ListAPIView):
 class WagonEmptyOrderDetail(APIView):
     def get(self, request, order_number):
         orders = WagonEmptyOrder.objects.filter(order__order_number=order_number).select_related(
-            'order__departure', 'order__destination')
+            'order__departure', 'order__destination').prefetch_related('order__counterparties__category',
+                                                                       'order__counterparties__counterparty',
+                                                                       'wagon_empty_preliminary_costs__counterparty__counterparty',
+                                                                       'wagon_empty_preliminary_costs__counterparty__category',
+                                                                       'expanses__actual_costs__counterparty__counterparty',
+                                                                       'expanses__actual_costs__counterparty__category',
+                                                                       'expanses__wagon'
+                                                                       )
 
         serializer = WagonEmptyOrderSerializer(orders, many=True)
         return Response(serializer.data)
