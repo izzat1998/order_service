@@ -21,7 +21,7 @@ class WagonEmptyActualCost(TimeStampedModel):
 
     class Meta:
         unique_together = ('counterparty', 'wagon_expanse')
-
+        ordering = ['counterparty']
 
 class WagonEmptyExpanse(models.Model):
     agreed_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
