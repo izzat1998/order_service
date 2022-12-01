@@ -10,6 +10,11 @@ from apps.wagon_empty_order.models import WagonEmptyPreliminaryCost, WagonEmptyE
 from apps.wagon_empty_order.serializers.serializers import WagonEmptyCounterPartyOrderSerializer
 
 
+class WagonEmptyCreateCounterPartyOrderSerializer(serializers.Serializer):
+    category_id = serializers.IntegerField()
+    counterparty_id = serializers.IntegerField()
+
+
 class OrderCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     order_number = serializers.IntegerField()
@@ -31,7 +36,7 @@ class OrderCreateSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
-    counterparties = WagonEmptyCounterPartyOrderSerializer(many=True)
+    counterparties = WagonEmptyCreateCounterPartyOrderSerializer(many=True)
 
 
 class PreliminaryCostCreateSerializer(serializers.Serializer):
@@ -57,6 +62,7 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
         wagon_preliminary_data = validated_data.pop('wagon_empty_preliminary_costs')
         order_data = validated_data.pop('order')
         counterparty_data = order_data.pop('counterparties')
+
         quantity = validated_data.pop('quantity')
         agreed_rate = validated_data.pop('agreed_rate')
         counterparties = []
@@ -72,7 +78,8 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
         def create_wagon_order(order_d):
             base_order = Order.objects.create(**order_d)
             order = WagonEmptyOrder.objects.create(order=base_order, agreed_rate=agreed_rate, quantity=quantity)
-            counterparty = WagonEmptyCounterPartyOrderSerializer(data=counterparty_data, many=True)
+            counterparty = WagonEmptyCreateCounterPartyOrderSerializer(data=counterparty_data, many=True)
+
             if counterparty.is_valid(raise_exception=True):
                 for counterparty in counterparty.data:
                     CounterPartyOrder.objects.create(**counterparty, order=base_order)
