@@ -24,5 +24,6 @@ class WagonEmptyActualCost(TimeStampedModel):
 
 
 class WagonEmptyExpanse(models.Model):
+    agreed_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     order = models.ForeignKey(WagonEmptyOrder, related_name='expanses', null=True, on_delete=models.SET_NULL)
     wagon = models.ForeignKey(Wagon, related_name='empty_expanses', null=True, on_delete=models.SET_NULL)
