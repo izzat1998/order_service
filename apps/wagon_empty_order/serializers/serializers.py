@@ -1,16 +1,18 @@
 from rest_framework import serializers
 
 from apps.core.serializers import WagonSerializer
+from apps.counterparty.serializers import CounterpartySerializer, CategorySerializer
 from apps.order.models import Order
 
 
 class WagonEmptyCounterPartyOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    category_id = serializers.IntegerField(read_only=True)
-    counterparty_id = serializers.IntegerField(read_only=True)
+    category = CategorySerializer()
+    counterparty = CounterpartySerializer()
 
 
 class WagonEmptyActualCostSerializer(serializers.Serializer):
+
     actual_cost = serializers.DecimalField(max_digits=10, decimal_places=2)
     counterparty = WagonEmptyCounterPartyOrderSerializer()
 
@@ -18,7 +20,7 @@ class WagonEmptyActualCostSerializer(serializers.Serializer):
 class WagonEmptyExpanseSerializer(serializers.Serializer):
     wagon = WagonSerializer()
     actual_costs = WagonEmptyActualCostSerializer(many=True)
-
+    agreed_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 class StationSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)

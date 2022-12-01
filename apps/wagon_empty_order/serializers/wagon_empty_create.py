@@ -69,7 +69,7 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
 
         def create_expanse(quantity, order):
             for i in range(quantity):
-                wagon_expanse = WagonEmptyExpanse.objects.create(order=order)
+                wagon_expanse = WagonEmptyExpanse.objects.create(order=order, agreed_rate=agreed_rate)
                 for counterparty in counterparties:
                     WagonEmptyActualCost.objects.create(actual_cost=counterparty['preliminary_cost'],
                                                         wagon_expanse=wagon_expanse,
