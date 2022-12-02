@@ -20,7 +20,8 @@ class OrderStatistic(APIView):
                             wagons_count=Count('id'))
         )
         empty_wagon_orders = WagonEmptyOrder.objects.order_by('order__position').values('order__position').annotate(
-            agreed_rate=Sum(F('expanses__agreed_rate'), wagons_count=Count('id')))
+            agreed_rate=Sum('expanses__agreed_rate'),
+            wagons_count=Count('id'))
         container = {
             'type': "ContainerOrder",
             'stat': container_orders
