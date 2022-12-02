@@ -43,6 +43,7 @@ class ContainerExpanseContainerAll(APIView):
 
 class ContainerExpanseUpdate(APIView):
     def put(self, request, pk):
+        container_type_id = request.data['container_type_id']
         container_expanse = ContainerExpanse.objects.filter(pk=pk).first()
         if request.data['container_name'] == '':
             container_expanse.container = None
@@ -50,7 +51,8 @@ class ContainerExpanseUpdate(APIView):
             serializer = ContainerExpanseSerializer(container_expanse)
             return Response({"container": serializer.data.get('container')})
         else:
-            if ContainerExpanse.objects.filter(container__name=request.data['container_name']).exists():
+            if ContainerExpanse.objects.filter(container_type_id=container_type_id,
+                                               container__name=request.data['container_name']).exists():
                 raise serializers.ValidationError({'error': 'Container is already exists'})
 
             container, _ = Container.objects.get_or_create(name=request.data['container_name'])
