@@ -68,6 +68,10 @@ class Order(TimeStampedModel):
         return str(self.order_number)
 
     @classmethod
+    def last_number(cls):
+        return cls.objects.last().order_number
+
+    @classmethod
     def position_count(cls, position_type):
         return cls.objects.filter(position=position_type).count()
 
@@ -97,7 +101,7 @@ class WagonOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "empty_wagon_order"
+                self.order, "empty_wagon_order"
         ):
             super(WagonOrder, self).save(*args, **kwargs)
         else:
@@ -121,7 +125,7 @@ class WagonEmptyOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "wagon_order"
+                self.order, "wagon_order"
         ):
             super(WagonEmptyOrder, self).save(*args, **kwargs)
         else:

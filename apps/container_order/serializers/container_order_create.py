@@ -44,7 +44,6 @@ class ContainerTypeOrderCreateSerializer(serializers.Serializer):
 
 class OrderCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    order_number = serializers.IntegerField()
     lot_number = serializers.CharField(
         max_length=255, allow_blank=True, allow_null=True
     )
@@ -81,10 +80,6 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
     container_types = ContainerTypeOrderCreateSerializer(many=True)
 
     def validate(self, data):
-        if ContainerOrder.objects.filter(
-                order__order_number=data["order"]["order_number"]
-        ).exists():
-            raise serializers.ValidationError("Order number already exists")
         if not Station.objects.filter(
                 Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
@@ -103,8 +98,7 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
         cont_order_data = validated_data
 
         def create_container_order(order_d, container_order_data):
-
-            base_order = Order.objects.create(**order_d)
+            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
             order = ContainerOrder.objects.create(
                 order=base_order, **container_order_data
             )
