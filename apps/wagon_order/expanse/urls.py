@@ -1,16 +1,17 @@
 from django.urls import path
 
-from apps.wagon_order.expanse.views import (
+from .views import (
     WagonExpanseCreate,
     WagonExpanseUpdate,
     WagonActualCostUpdate,
-    WagonExpanseWagonAll,
+    WagonExpanseWagonAll, WagonExpanseUpdateWagonAll,
 )
 
 urlpatterns = [
-    path("create/", WagonExpanseCreate.as_view(), name="expanse-create"),
-    path("update/<int:pk>/", WagonExpanseUpdate.as_view(), name="expanse-update"),
-    path("wagon_add/", WagonExpanseWagonAll.as_view(), name="wagon-expanse-all"),
+    path("create/", WagonExpanseCreate.as_view(), name="expanse_create"),
+    path("update/<int:pk>/", WagonExpanseUpdate.as_view(), name="expanse_update"),
+    path("wagon_add/", WagonExpanseWagonAll.as_view(), name="wagon_expanse_all"),
+    path("actual_cost_to_all/", WagonExpanseUpdateWagonAll.as_view(), name="wagon_expanse_all"),
     path(
         "actual_cost/update/<int:pk>/",
         WagonActualCostUpdate.as_view(),

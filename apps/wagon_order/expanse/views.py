@@ -30,6 +30,21 @@ class WagonExpanseWagonAll(APIView):
         return Response(status=200)
 
 
+class WagonExpanseUpdateWagonAll(APIView):
+    def put(self, request):
+        order_number = request.data["order_number"]
+        counterparty_id = request.data["counterparty_id"]
+        actual_cost = request.data["actual_cost"]
+        actual_costs = WagonActualCost.objects.filter(
+            counterparty_id=counterparty_id,
+            wagon_expanse__order__order__order_number=order_number,
+        )
+        for ac in actual_costs:
+            ac.actual_cost = actual_cost
+            ac.save()
+        return Response(status=200)
+
+
 class WagonExpanseUpdate(APIView):
     def put(self, request, pk):
         wagon_expanse = (
@@ -40,7 +55,7 @@ class WagonExpanseUpdate(APIView):
 
         elif "wagon_name" in request.data:
             if WagonExpanse.objects.filter(
-                wagon__name=request.data["wagon_name"]
+                    wagon__name=request.data["wagon_name"]
             ).exists():
                 raise serializers.ValidationError({"error": "Wagon is already exists"})
             wagon, _ = Wagon.objects.get_or_create(name=request.data["wagon_name"])
