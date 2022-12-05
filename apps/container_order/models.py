@@ -17,6 +17,7 @@ class ContainerOrder(models.Model):
         Product, on_delete=models.SET_NULL, related_name="container_order", null=True
     )
     container_order_objects = ContainerOrderManager()
+    objects = models.Manager()
 
     class Meta:
         db_table = "container_order"
@@ -28,7 +29,7 @@ class ContainerOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "wagon_order") and not hasattr(
-            self.order, "empty_wagon_order"
+                self.order, "empty_wagon_order"
         ):
             super(ContainerOrder, self).save(*args, **kwargs)
         else:

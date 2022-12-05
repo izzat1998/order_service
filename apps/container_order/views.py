@@ -5,16 +5,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import ContainerOrder
-from apps.container_order.serializers.container_order_create import (
+from .serializers.container_order_create import (
     ContainerOrderCreateSerializer,
 )
-from apps.container_order.serializers.container_order_list import (
+from .serializers.container_order_list import (
     ContainerOrderListSerializer,
 )
-from apps.container_order.serializers.container_order_update import (
+from .serializers.container_order_update import (
     ContainerOrderUpdateSerializer,
 )
-from apps.container_order.serializers.serializers import ContainerOrderSerializer
+from .serializers.serializers import ContainerOrderSerializer
 from apps.order.models import Order
 
 
