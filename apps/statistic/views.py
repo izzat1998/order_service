@@ -20,16 +20,12 @@ class OrderStatistic(APIView):
                 containers_count=Count("id"),
             )
         )
-        wagon_orders = (
-            WagonOrder.objects.order_by("order__position")
-            .values("order__position")
-            .annotate(
-                agreed_rate=Sum(
-                    F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight"),
-                    wagons_count=Count("id"),
-                )
-            )
+        wagon_orders = WagonOrder.objects.order_by("order__position").values("order__position").annotate(
+            agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
+            containers_count=Count("id")
+
         )
+
         empty_wagon_orders = (
             WagonEmptyOrder.objects.order_by("order__position")
             .values("order__position")
