@@ -20,7 +20,6 @@ class PreliminaryCostCreateSerializer(serializers.Serializer):
 
 class OrderCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    order_number = serializers.IntegerField()
     lot_number = serializers.CharField(
         max_length=255, allow_blank=True, allow_null=True
     )
@@ -59,12 +58,8 @@ class WagonOrderCreateSerializer(serializers.Serializer):
     wagon_preliminary_costs = PreliminaryCostCreateSerializer(many=True)
 
     def validate(self, data):
-        if WagonOrder.objects.filter(
-            order__order_number=data["order"]["order_number"]
-        ).exists():
-            raise serializers.ValidationError("Order number already exists")
         if not Station.objects.filter(
-            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"
@@ -83,7 +78,7 @@ class WagonOrderCreateSerializer(serializers.Serializer):
         counterparties = []
 
         def create_wagon_order(order_d, wagon_data):
-            base_order = Order.objects.create(**order_d)
+            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
             order = WagonOrder.objects.create(order=base_order, **wagon_data)
             counterparty = CounterPartyOrderCreateSerializer(
                 data=counterparty_data, many=True

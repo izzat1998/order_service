@@ -20,7 +20,6 @@ class WagonEmptyCreateCounterPartyOrderSerializer(serializers.Serializer):
 
 class OrderCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    order_number = serializers.IntegerField()
     lot_number = serializers.CharField(max_length=255)
     date = serializers.DateField()
     position = serializers.ChoiceField(choices=Order.POSITION_CHOICES)
@@ -55,10 +54,6 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
 
     def validate(self, data):
-        if WagonEmptyOrder.objects.filter(
-                order__order_number=data["order"]["order_number"]
-        ).exists():
-            raise serializers.ValidationError("Order number already exists")
         if not Station.objects.filter(
                 Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
@@ -89,7 +84,7 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
                     )
 
         def create_wagon_order(order_d):
-            base_order = Order.objects.create(**order_d)
+            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
             order = WagonEmptyOrder.objects.create(
                 order=base_order, agreed_rate=agreed_rate, quantity=quantity
             )
