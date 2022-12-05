@@ -1,7 +1,11 @@
 from django.db.models import Sum
 from rest_framework import serializers
 
-from apps.container_order.models import ContainerTypeOrder, ContainerOrder, ContainerActualCost
+from ..models import (
+    ContainerTypeOrder,
+    ContainerOrder,
+    ContainerActualCost,
+)
 from apps.core.serializers import ContainerSerializer
 from apps.counterparty.serializers import CategorySerializer, CounterpartySerializer
 from apps.order.models import Order
@@ -28,14 +32,16 @@ class CounterPartyOrderSerializer(serializers.Serializer):
 
 
 class CounterPartyOrderTotalExpanseSerializer(serializers.Serializer):
-    total_expanses = serializers.SerializerMethodField('_get_total_expanses')
+    total_expanses = serializers.SerializerMethodField("_get_total_expanses")
 
     id = serializers.IntegerField(read_only=True)
     category = CategorySerializer()
     counterparty = CounterpartySerializer()
 
     def _get_total_expanses(self, obj):
-        return ContainerActualCost.objects.filter(counterparty_id=obj.id).aggregate(total=Sum('actual_cost'))['total']
+        return ContainerActualCost.objects.filter(counterparty_id=obj.id).aggregate(
+            total=Sum("actual_cost")
+        )["total"]
 
 
 class ContainerActualCostSerializer(serializers.Serializer):
@@ -61,7 +67,9 @@ class ContainerTypeOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     agreed_rate = serializers.DecimalField(decimal_places=2, max_digits=10)
     quantity = serializers.IntegerField()
-    container_type = serializers.ChoiceField(choices=ContainerTypeOrder.CONTAINER_TYPE_CHOICES)
+    container_type = serializers.ChoiceField(
+        choices=ContainerTypeOrder.CONTAINER_TYPE_CHOICES
+    )
     container_preliminary_costs = ContainerPreliminaryCost(many=True)
     expanses = ContainerExpanseSerializer(many=True)
 

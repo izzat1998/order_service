@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.counterparty.models import CounterpartyCategory, Counterparty
+from .models import CounterpartyCategory, Counterparty
 
 
 class CategorySerializer(serializers.Serializer):
@@ -11,8 +11,8 @@ class CategorySerializer(serializers.Serializer):
         return CounterpartyCategory.objects.create(**validated_data)
 
     def validate(self, data):
-        if CounterpartyCategory.objects.filter(name=data['name']).exists():
-            raise serializers.ValidationError('Category with this name already exists')
+        if CounterpartyCategory.objects.filter(name=data["name"]).exists():
+            raise serializers.ValidationError("Category with this name already exists")
         return data
 
     def update(self, instance, validated_data):
@@ -29,8 +29,10 @@ class CounterpartySerializer(serializers.Serializer):
         return Counterparty.objects.create(**validated_data)
 
     def validate(self, data):
-        if Counterparty.objects.filter(name=data['name']).exists():
-            raise serializers.ValidationError('Counterparty with this name already exists')
+        if Counterparty.objects.filter(name=data["name"]).exists():
+            raise serializers.ValidationError(
+                "Counterparty with this name already exists"
+            )
         return data
 
     def update(self, instance, validated_data):

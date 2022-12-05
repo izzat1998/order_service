@@ -1,8 +1,10 @@
 from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 
-from apps.container_order.container_type.serializers import ContainerTypeOrderCreateSerializer, \
-    ContainerTypeOrderUpdateSerializer
-from apps.container_order.models import ContainerTypeOrder
+from .serializers import (
+    ContainerTypeOrderCreateSerializer,
+    ContainerTypeOrderUpdateSerializer,
+)
+from ..models import ContainerTypeOrder
 
 
 class ContainerTypeOrderCreate(CreateAPIView):
@@ -11,11 +13,11 @@ class ContainerTypeOrderCreate(CreateAPIView):
 
 
 class ContainerTypeOrderUpdate(UpdateAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     serializer_class = ContainerTypeOrderUpdateSerializer
     queryset = ContainerTypeOrder.objects.all()
 
 
 class ContainerTypeOrderDelete(DestroyAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = ContainerTypeOrder.objects.all()

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.container_order.models import ContainerPreliminaryCost
+from ..models import ContainerPreliminaryCost
 
 
 class ContainerPreliminaryCreateSerializer(serializers.Serializer):
@@ -20,6 +20,6 @@ class ContainerPreliminaryUpdateSerializer(serializers.Serializer):
     container_type_id = serializers.IntegerField(read_only=True)
 
     def update(self, instance, validated_data):
-        instance.preliminary_cost = validated_data.get('preliminary_cost')
+        instance.preliminary_cost = validated_data.get("preliminary_cost")
         instance.save()
         return instance

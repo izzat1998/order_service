@@ -1,8 +1,10 @@
 from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 
-from apps.wagon_order.models import WagonPreliminaryCost
-from apps.wagon_order.preliminary_cost.serializers import WagonPreliminaryCostUpdateSerializer, \
-    WagonPreliminaryCostCreateSerializer
+from ..models import WagonPreliminaryCost
+from .serializers import (
+    WagonPreliminaryCostUpdateSerializer,
+    WagonPreliminaryCostCreateSerializer,
+)
 
 
 class WagonPreliminaryCostCreate(CreateAPIView):
@@ -11,11 +13,11 @@ class WagonPreliminaryCostCreate(CreateAPIView):
 
 
 class WagonPreliminaryCostUpdate(UpdateAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     serializer_class = WagonPreliminaryCostUpdateSerializer
     queryset = WagonPreliminaryCost.objects.all()
 
 
 class WagonPreliminaryCostDelete(DestroyAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = WagonPreliminaryCost.objects.all()

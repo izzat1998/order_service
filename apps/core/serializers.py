@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.core.models import Product, Station, Container, Wagon
+from .models import Product, Station, Container, Wagon
 
 
 class ProductSerializer(serializers.Serializer):
@@ -11,8 +11,10 @@ class ProductSerializer(serializers.Serializer):
     etcng_name = serializers.CharField()
 
     def validate(self, data):
-        if Product.objects.filter(name=data['name'], etcng_code=data['etcng_code'], hc_code=data['hc_code']).exists():
-            raise serializers.ValidationError('Product  already exists')
+        if Product.objects.filter(
+                name=data["name"], etcng_code=data["etcng_code"], hc_code=data["hc_code"]
+        ).exists():
+            raise serializers.ValidationError("Product  already exists")
         return data
 
     def create(self, validated_data):
@@ -37,8 +39,8 @@ class StationSerializer(serializers.Serializer):
         return Station.objects.create(**validated_data)
 
     def validate(self, data):
-        if Station.objects.filter(name=data['name'], code=data['code']).exists():
-            raise serializers.ValidationError('Station  already exists')
+        if Station.objects.filter(name=data["name"], code=data["code"]).exists():
+            raise serializers.ValidationError("Station  already exists")
         return data
 
     def update(self, instance, validated_data):

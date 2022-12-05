@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.container_order.serializers.serializers import CounterPartyOrderSerializer
+
 from apps.core.serializers import WagonSerializer
 from apps.counterparty.serializers import CategorySerializer, CounterpartySerializer
 from apps.order.models import Order

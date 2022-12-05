@@ -9,7 +9,7 @@ class CounterpartyCategory(TimeStampedModel):
     class Meta:
         verbose_name = "CounterpartyCategory"
         verbose_name_plural = "CounterpartyCategories"
-        db_table = 'counterparty_category'
+        db_table = "counterparty_category"
 
     def __str__(self):
         return self.name
@@ -22,8 +22,7 @@ class Counterparty(TimeStampedModel):
     class Meta:
         verbose_name = "Counterparty"
         verbose_name_plural = "Counterparties"
-        db_table = 'counterparty'
+        db_table = "counterparty"
 
     def __str__(self):
         return self.name
-

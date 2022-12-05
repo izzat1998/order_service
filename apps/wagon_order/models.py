@@ -6,30 +6,42 @@ from apps.order.models import WagonOrder
 
 
 class WagonPreliminaryCost(TimeStampedModel):
-    order = models.ForeignKey(WagonOrder, on_delete=models.CASCADE,
-                              related_name='wagon_preliminary_costs')
-    counterparty = models.ForeignKey(CounterPartyOrder, on_delete=models.CASCADE,
-                                     )
-    preliminary_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    order = models.ForeignKey(
+        WagonOrder, on_delete=models.CASCADE, related_name="wagon_preliminary_costs"
+    )
+    counterparty = models.ForeignKey(
+        CounterPartyOrder,
+        on_delete=models.CASCADE,
+    )
+    preliminary_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True
+    )
 
 
 # Create your models here.
 class WagonActualCost(TimeStampedModel):
     counterparty = models.ForeignKey(CounterPartyOrder, on_delete=models.CASCADE)
     actual_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    wagon_expanse = models.ForeignKey('WagonExpanse', related_name='actual_costs', on_delete=models.CASCADE,
-                                      null=True)
+    wagon_expanse = models.ForeignKey(
+        "WagonExpanse", related_name="actual_costs", on_delete=models.CASCADE, null=True
+    )
 
     class Meta:
-        ordering = ['counterparty']
-        unique_together = ('counterparty', 'wagon_expanse')
+        ordering = ["counterparty"]
+        unique_together = ("counterparty", "wagon_expanse")
 
 
 class WagonExpanse(models.Model):
-    agreed_rate_per_tonn = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    agreed_rate_per_tonn = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True
+    )
     actual_weight = models.IntegerField(default=60)
-    order = models.ForeignKey(WagonOrder, related_name='expanses', null=True, on_delete=models.SET_NULL)
-    wagon = models.ForeignKey(Wagon, related_name='expanses', null=True, on_delete=models.SET_NULL)
+    order = models.ForeignKey(
+        WagonOrder, related_name="expanses", null=True, on_delete=models.SET_NULL
+    )
+    wagon = models.ForeignKey(
+        Wagon, related_name="expanses", null=True, on_delete=models.SET_NULL
+    )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ["-id"]

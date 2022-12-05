@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.order.models import Order
-from apps.wagon_empty_order.serializers.serializers import StationSerializer
+from .serializers import StationSerializer
 
 
 class OrderListSerializer(serializers.Serializer):
@@ -9,12 +9,22 @@ class OrderListSerializer(serializers.Serializer):
     order_number = serializers.IntegerField(read_only=True)
     lot_number = serializers.CharField(read_only=True)
     date = serializers.DateField(read_only=True)
-    position = serializers.ChoiceField(source='get_position_display', choices=Order.POSITION_CHOICES, read_only=True)
-    type = serializers.ChoiceField(source='get_type_display', choices=Order.ORDER_TYPE_CHOICES, read_only=True)
-    shipment_status = serializers.ChoiceField(source='get_shipment_status_display',
-                                              choices=Order.SHIPMENT_STATUS_CHOICES, read_only=True)
-    payment_status = serializers.ChoiceField(source='get_payment_status_display', choices=Order.PAYMENT_STATUS_CHOICES,
-                                             read_only=True)
+    position = serializers.ChoiceField(
+        source="get_position_display", choices=Order.POSITION_CHOICES, read_only=True
+    )
+    type = serializers.ChoiceField(
+        source="get_type_display", choices=Order.ORDER_TYPE_CHOICES, read_only=True
+    )
+    shipment_status = serializers.ChoiceField(
+        source="get_shipment_status_display",
+        choices=Order.SHIPMENT_STATUS_CHOICES,
+        read_only=True,
+    )
+    payment_status = serializers.ChoiceField(
+        source="get_payment_status_display",
+        choices=Order.PAYMENT_STATUS_CHOICES,
+        read_only=True,
+    )
     shipper = serializers.CharField(max_length=255, read_only=True)
     consignee = serializers.CharField(max_length=255, read_only=True)
     departure = StationSerializer(read_only=True)
