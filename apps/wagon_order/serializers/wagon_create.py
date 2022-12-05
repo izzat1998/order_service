@@ -59,7 +59,7 @@ class WagonOrderCreateSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Station.objects.filter(
-                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"
@@ -78,7 +78,9 @@ class WagonOrderCreateSerializer(serializers.Serializer):
         counterparties = []
 
         def create_wagon_order(order_d, wagon_data):
-            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
+            base_order = Order.objects.create(
+                **order_d, order_number=Order.last_number() + 1
+            )
             order = WagonOrder.objects.create(order=base_order, **wagon_data)
             counterparty = CounterPartyOrderCreateSerializer(
                 data=counterparty_data, many=True

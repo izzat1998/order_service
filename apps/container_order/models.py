@@ -1,5 +1,6 @@
 from django.db import models
 
+from apps.container_order.managers import ContainerOrderManager
 from apps.core.models import TimeStampedModel, Product, Container
 from apps.counterparty.models import Counterparty, CounterpartyCategory
 from apps.order.models import Order
@@ -15,6 +16,7 @@ class ContainerOrder(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.SET_NULL, related_name="container_order", null=True
     )
+    container_order_objects = ContainerOrderManager()
 
     class Meta:
         db_table = "container_order"

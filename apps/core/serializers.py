@@ -12,7 +12,7 @@ class ProductSerializer(serializers.Serializer):
 
     def validate(self, data):
         if Product.objects.filter(
-                name=data["name"], etcng_code=data["etcng_code"], hc_code=data["hc_code"]
+            name=data["name"], etcng_code=data["etcng_code"], hc_code=data["hc_code"]
         ).exists():
             raise serializers.ValidationError("Product  already exists")
         return data

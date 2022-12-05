@@ -21,7 +21,7 @@ class WagonEmptyExpanseUpdate(APIView):
             return Response({"wagon_name": wagon_empty_expanse.wagon})
         elif "wagon_name" in request.data:
             if WagonEmptyExpanse.objects.filter(
-                    wagon__name=request.data["wagon_name"]
+                wagon__name=request.data["wagon_name"]
             ).exists():
                 raise serializers.ValidationError({"error": "Wagon is already exists"})
 

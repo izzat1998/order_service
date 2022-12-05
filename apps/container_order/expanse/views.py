@@ -58,8 +58,8 @@ class ContainerExpanseUpdate(APIView):
             return Response({"container": serializer.data.get("container")})
         else:
             if ContainerExpanse.objects.filter(
-                    container_type_id=container_type_id,
-                    container__name=request.data["container_name"],
+                container_type_id=container_type_id,
+                container__name=request.data["container_name"],
             ).exists():
                 raise serializers.ValidationError(
                     {"error": "Container is already exists"}

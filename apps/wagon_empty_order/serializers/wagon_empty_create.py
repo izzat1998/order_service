@@ -55,7 +55,7 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Station.objects.filter(
-                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"
@@ -84,7 +84,9 @@ class WagonEmptyOrderCreateSerializer(serializers.Serializer):
                     )
 
         def create_wagon_order(order_d):
-            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
+            base_order = Order.objects.create(
+                **order_d, order_number=Order.last_number() + 1
+            )
             order = WagonEmptyOrder.objects.create(
                 order=base_order, agreed_rate=agreed_rate, quantity=quantity
             )

@@ -43,7 +43,7 @@ class WagonOrderUpdateSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Station.objects.filter(
-                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"

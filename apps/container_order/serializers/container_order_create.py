@@ -81,7 +81,7 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Station.objects.filter(
-                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"
@@ -98,7 +98,9 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
         cont_order_data = validated_data
 
         def create_container_order(order_d, container_order_data):
-            base_order = Order.objects.create(**order_d, order_number=Order.last_number() + 1)
+            base_order = Order.objects.create(
+                **order_d, order_number=Order.last_number() + 1
+            )
             order = ContainerOrder.objects.create(
                 order=base_order, **container_order_data
             )
@@ -123,7 +125,7 @@ class ContainerOrderCreateSerializer(serializers.Serializer):
                     )
 
         def create_preliminary_cost(
-                container_preliminary_data, parent_order, cntr_type
+            container_preliminary_data, parent_order, cntr_type
         ):
             container_preliminary_cost = ContainerPreliminaryCostCreateSerializer(
                 data=container_preliminary_data, many=True
