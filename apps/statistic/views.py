@@ -12,38 +12,63 @@ from apps.order.models import WagonOrder, Order, WagonEmptyOrder
 
 class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
-        container_orders = (
-            ContainerOrder.objects.order_by("order__position")
-            .values("order__position")
-            .annotate(
-                agreed_rate=Sum("container_types__expanses__agreed_rate"),
-                containers_count=Count("id"),
+        if 'manager' in request.GET:
+            container_orders = (
+                ContainerOrder.objects.filter(order__manager=request.GET['manager']).order_by("order__position")
+                .values("order__position")
+                .annotate(
+                    agreed_rate=Sum("container_types__expanses__agreed_rate"),
+                    containers_count=Count("id"),
+                )
             )
-        )
-        wagon_orders = WagonOrder.objects.order_by("order__position").values("order__position").annotate(
-            agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
-            containers_count=Count("id")
+            wagon_orders = WagonOrder.objects.filter(order__manager=request.GET['manager']).order_by(
+                "order__position").values("order__position").annotate(
+                agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
+                containers_count=Count("id")
 
-        )
-
-        empty_wagon_orders = (
-            WagonEmptyOrder.objects.order_by("order__position")
-            .values("order__position")
-            .annotate(
-                agreed_rate=Sum("expanses__agreed_rate"), wagons_count=Count("id")
             )
-        )
-        container = {"type": "ContainerOrder", "stat": container_orders}
-        wagon = {"type": "WagonOrder", "stat": wagon_orders}
-        empty_wagon = {"type": "WagonEmptyOrder", "stat": empty_wagon_orders}
 
-        # statistic = {
-        #     'rail_forwarder_count': Order.position_count(Order.POSITION_CHOICES[0][0]),
-        #     'block_train_count': Order.position_count(Order.POSITION_CHOICES[1][0]),
-        #     'multi_modal_count': Order.position_count(Order.POSITION_CHOICES[2][0])
-        # }
+            empty_wagon_orders = (
+                WagonEmptyOrder.objects.filter(order__manager=request.GET['manager']).order_by("order__position")
+                .values("order__position")
+                .annotate(
+                    agreed_rate=Sum("expanses__agreed_rate"), wagons_count=Count("id")
+                )
+            )
 
-        return Response([container, wagon, empty_wagon])
+            container = {"type": "ContainerOrder", "stat": container_orders}
+            wagon = {"type": "WagonOrder", "stat": wagon_orders}
+            empty_wagon = {"type": "WagonEmptyOrder", "stat": empty_wagon_orders}
+
+            return Response([container, wagon, empty_wagon])
+        else:
+            container_orders = (
+                ContainerOrder.objects.order_by("order__position")
+                .values("order__position")
+                .annotate(
+                    agreed_rate=Sum("container_types__expanses__agreed_rate"),
+                    containers_count=Count("id"),
+                )
+            )
+            wagon_orders = WagonOrder.objects.order_by("order__position").values("order__position").annotate(
+                agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
+                containers_count=Count("id")
+
+            )
+
+            empty_wagon_orders = (
+                WagonEmptyOrder.objects.order_by("order__position")
+                .values("order__position")
+                .annotate(
+                    agreed_rate=Sum("expanses__agreed_rate"), wagons_count=Count("id")
+                )
+            )
+
+            container = {"type": "ContainerOrder", "stat": container_orders}
+            wagon = {"type": "WagonOrder", "stat": wagon_orders}
+            empty_wagon = {"type": "WagonEmptyOrder", "stat": empty_wagon_orders}
+
+            return Response([container, wagon, empty_wagon])
 
 
 class OrderStatisticMonthly(APIView):

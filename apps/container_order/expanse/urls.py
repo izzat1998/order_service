@@ -1,7 +1,6 @@
 from django.urls import path
 
 from .views import (
-    ContainerExpanseCreate,
     CounterpartyAddExpanse,
     ContainerExpanseUpdate,
     ContainerExpanseDelete,
@@ -11,7 +10,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path("create/", ContainerExpanseCreate.as_view(), name="container_expanse_create"),
     path(
         "update/<int:pk>/",
         ContainerExpanseUpdate.as_view(),

@@ -13,11 +13,6 @@ from ..serializers.serializers import ContainerExpanseSerializer
 from apps.core.models import Container
 
 
-class ContainerExpanseCreate(CreateAPIView):
-    queryset = ContainerExpanse.objects.all()
-    serializer_class = ContainerExpanseCreateSerializer
-
-
 class ContainerExpanseUpdateAll(APIView):
     def put(self, request):
         container_type_id = request.data["container_type_id"]
@@ -58,8 +53,8 @@ class ContainerExpanseUpdate(APIView):
             return Response({"container": serializer.data.get("container")})
         else:
             if ContainerExpanse.objects.filter(
-                container_type_id=container_type_id,
-                container__name=request.data["container_name"],
+                    container_type_id=container_type_id,
+                    container__name=request.data["container_name"],
             ).exists():
                 raise serializers.ValidationError(
                     {"error": "Container is already exists"}
