@@ -90,7 +90,7 @@ class CounterpartyAddExpanse(APIView):
         order_number = request.data["order_number"]
         order = Order.objects.filter(order_number=order_number).first()
         counterparty_order_id = CounterPartyOrder.objects.create(order=order, category_id=category_id,
-                                                                 counterparty_id=counterparty_id)
+                                                                 counterparty_id=counterparty_id).id
         containers_expanse = ContainerExpanse.objects.filter(
             container_type_id=container_type_id
         )
