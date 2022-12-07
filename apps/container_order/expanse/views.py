@@ -8,9 +8,10 @@ from .serializers import (
     ContainerExpanseCreateSerializer,
     ContainerActualCostUpdateSerializer,
 )
-from ..models import ContainerExpanse, ContainerActualCost
+from ..models import ContainerExpanse, ContainerActualCost, CounterPartyOrder
 from ..serializers.serializers import ContainerExpanseSerializer
 from apps.core.models import Container
+from ...order.models import Order
 
 
 class ContainerExpanseUpdateAll(APIView):
@@ -85,6 +86,11 @@ class CounterpartyAddExpanse(APIView):
         preliminary_cost = request.data["preliminary_cost"]
         container_type_id = request.data["container_type_id"]
         counterparty_id = request.data["counterparty_id"]
+        category_id = request.data["category_id"]
+        order_number = request.data["order_number"]
+        order = Order.objects.filter(order_number=order_number).first()
+        counterparty_order_id = CounterPartyOrder.objects.create(order=order, category_id=category_id,
+                                                                 counterparty_id=counterparty_id)
         containers_expanse = ContainerExpanse.objects.filter(
             container_type_id=container_type_id
         )
@@ -92,6 +98,6 @@ class CounterpartyAddExpanse(APIView):
             ContainerActualCost.objects.create(
                 container_expanse=container,
                 actual_cost=preliminary_cost,
-                counterparty_id=counterparty_id,
+                counterparty_id=counterparty_order_id,
             )
         return Response(status=201)
