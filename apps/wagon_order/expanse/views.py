@@ -91,7 +91,7 @@ class WagonCounterPartyAddExpanse(APIView):
         order = Order.objects.filter(order_number=order_number).first()
         counterparty_order_id = CounterPartyOrder.objects.create(order=order, category_id=category_id,
                                                                  counterparty_id=counterparty_id).id
-        wagon_expanse = WagonExpanse.objects.filter(order__order_number=order_number)
+        wagon_expanse = WagonExpanse.objects.filter(order__order__order_number=order_number)
 
         for wagon in wagon_expanse:
             WagonActualCost.objects.create(
