@@ -5,6 +5,7 @@ from .views import (
     WagonExpanseUpdate,
     WagonActualCostUpdate,
     WagonExpanseWagonAll, WagonExpanseUpdateWagonAll,
+    WagonCounterPartyAddExpanse
 )
 
 urlpatterns = [
@@ -16,5 +17,10 @@ urlpatterns = [
         "actual_cost/update/<int:pk>/",
         WagonActualCostUpdate.as_view(),
         name="actual-cost-update",
+    ),
+    path(
+        "counterparty_add/",
+        WagonCounterPartyAddExpanse.as_view(),
+        name="wagon_counterparty_add",
     ),
 ]
