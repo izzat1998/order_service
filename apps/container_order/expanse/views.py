@@ -23,7 +23,7 @@ class ContainerExpanseUpdateAll(APIView):
             counterparty_id=counterparty_id,
             container_expanse__container_type_id=container_type_id,
         )
-        if actual_costs.exists():
+        if len(actual_costs) == 0:
             return Response({'error': "Not Found"}, status=404)
         for ac in actual_costs:
             ac.actual_cost = actual_cost
