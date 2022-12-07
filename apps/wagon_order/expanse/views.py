@@ -84,7 +84,7 @@ class WagonActualCostUpdate(UpdateAPIView):
 
 class WagonCounterPartyAddExpanse(APIView):
     def post(self, request):
-        preliminary_cost = request.data["preliminary_costs"]
+        preliminary_cost = request.data["preliminary_cost"]
         counterparty_id = request.data["counterparty_id"]
         category_id = request.data["category_id"]
         order_number = request.data["order_number"]
