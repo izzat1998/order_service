@@ -14,10 +14,6 @@ from apps.core.models import Container
 from ...order.models import Order
 
 
-
-
-
-
 class ContainerExpanseUpdateAll(APIView):
     def put(self, request):
         container_type_id = request.data["container_type_id"]
@@ -27,6 +23,8 @@ class ContainerExpanseUpdateAll(APIView):
             counterparty_id=counterparty_id,
             container_expanse__container_type_id=container_type_id,
         )
+        if actual_costs.exists():
+            return Response({'error': "Not Found"}, status=404)
         for ac in actual_costs:
             ac.actual_cost = actual_cost
             ac.save()

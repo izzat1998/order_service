@@ -41,9 +41,12 @@ class WagonExpanseUpdateWagonAll(APIView):
             counterparty_id=counterparty_id,
             wagon_expanse__order__order__order_number=order_number,
         )
+        if actual_costs.exists():
+            return Response({'error': "Not Found"}, status=404)
         for ac in actual_costs:
             ac.actual_cost = actual_cost
             ac.save()
+
         return Response(status=200)
 
 
