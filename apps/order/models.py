@@ -101,7 +101,7 @@ class WagonOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "empty_wagon_order"
+                self.order, "empty_wagon_order"
         ):
             super(WagonOrder, self).save(*args, **kwargs)
         else:
@@ -125,7 +125,7 @@ class WagonEmptyOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "wagon_order"
+                self.order, "wagon_order"
         ):
             super(WagonEmptyOrder, self).save(*args, **kwargs)
         else:

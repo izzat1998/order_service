@@ -24,3 +24,4 @@ class OrderSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
+    child_type = serializers.CharField()

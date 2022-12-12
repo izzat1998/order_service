@@ -38,7 +38,7 @@ class ContainerOrder(models.Model):
 
 class CounterPartyOrder(TimeStampedModel):
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="counterparties"
+        Order, on_delete=models.CASCADE, related_name="container_order"
     )
     counterparty = models.ForeignKey(Counterparty, on_delete=models.CASCADE)
     category = models.ForeignKey(
