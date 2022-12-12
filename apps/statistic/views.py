@@ -13,6 +13,9 @@ from apps.order.models import WagonOrder, Order, WagonEmptyOrder
 class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
         if 'manager' in request.GET:
+
+            order_types = Order.objects.filter(manager=request.GET['manager']).values("type").annotate(
+                count=Count("id"))
             container_orders = (
                 ContainerOrder.objects.filter(order__manager=request.GET['manager']).order_by("order__position")
                 .values("order__position")
@@ -40,8 +43,12 @@ class OrderStatistic(APIView):
             wagon = {"type": "WagonOrder", "stat": wagon_orders}
             empty_wagon = {"type": "WagonEmptyOrder", "stat": empty_wagon_orders}
 
-            return Response([container, wagon, empty_wagon])
+            return Response(
+                {'sales': [container, wagon, empty_wagon]},
+                {'order_type': order_types}
+            )
         else:
+            order_types = Order.objects.values("type").annotate(count=Count("id"))
             container_orders = (
                 ContainerOrder.objects.order_by("order__position")
                 .values("order__position")
@@ -68,7 +75,9 @@ class OrderStatistic(APIView):
             wagon = {"type": "WagonOrder", "stat": wagon_orders}
             empty_wagon = {"type": "WagonEmptyOrder", "stat": empty_wagon_orders}
 
-            return Response([container, wagon, empty_wagon])
+            return Response(
+                {'sales': [container, wagon, empty_wagon],
+                 'order_type': order_types})
 
 
 class OrderStatisticMonthly(APIView):

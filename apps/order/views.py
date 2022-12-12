@@ -14,5 +14,7 @@ class OrderList(APIView):
             orders = orders.filter(manager=request.GET['manager'])
         if 'order_number' in request.GET:
             orders = orders.filter(order_number=request.GET['order_number'])
+        if 'position' in request.GET:
+            orders = orders.filter(position=request.GET['position'])
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
