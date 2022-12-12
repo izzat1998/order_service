@@ -8,7 +8,7 @@ from apps.order.models import Order
 
 # Create your models here.
 class ContainerOrder(models.Model):
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="я")
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="container_order")
     SENDING_TYPE_CHOICES = (("single", "Single"), ("block_train", "Block train"))
     sending_type = models.CharField(
         max_length=50, choices=SENDING_TYPE_CHOICES, default=SENDING_TYPE_CHOICES[0][0]
@@ -38,7 +38,7 @@ class ContainerOrder(models.Model):
 
 class CounterPartyOrder(TimeStampedModel):
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="container_order"
+        Order, on_delete=models.CASCADE, related_name="counterparties"
     )
     counterparty = models.ForeignKey(Counterparty, on_delete=models.CASCADE)
     category = models.ForeignKey(
