@@ -51,10 +51,11 @@ class OrderStatistic(APIView):
                 {'order_type': order_types}
             )
         else:
-            order_types = Order.objects.filter( visible=True).values("type").annotate(count=Count("id"))
+            order_types = Order.objects.filter(visible=True).values("type", 'shipment_status').annotate(
+                count=Count("id"), shipment_count=Count('id'))
             container_orders = (
                 ContainerOrder.objects.filter(order__visible=True).order_by("order__position")
-                .values("order__position", 'order__shipment_status')
+                .values("order__position")
                 .annotate(
                     agreed_rate=Sum("container_types__expanses__agreed_rate"),
                     containers_count=Count("id"),
