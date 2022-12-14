@@ -51,7 +51,7 @@ class OrderStatistic(APIView):
                 {'order_type': order_types}
             )
         else:
-            order_types = Order.objects.filter(order__visible=True).values("type").annotate(count=Count("id"))
+            order_types = Order.objects.filter( visible=True).values("type").annotate(count=Count("id"))
             container_orders = (
                 ContainerOrder.objects.filter(order__visible=True).order_by("order__position")
                 .values("order__position", 'order__shipment_status')
@@ -94,7 +94,7 @@ class OrderStatisticMonthly(APIView):
         )
 
         container_expanses = (
-            ContainerExpanse.objects.filter(order__visible=True).annotate(
+            ContainerExpanse.objects.filter(container_type__order__order__visible=True).annotate(
                 month=ExtractMonth("container_type__order__order__date"),
                 year=ExtractYear("container_type__order__order__date"),
             )
