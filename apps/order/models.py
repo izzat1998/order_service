@@ -63,6 +63,7 @@ class Order(TimeStampedModel):
     manager = models.IntegerField(blank=True)
     customer = models.IntegerField(blank=True)
     request_file = models.FileField(upload_to="applications/", blank=True, null=True)
+    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.order_number)
@@ -101,7 +102,7 @@ class WagonOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "empty_wagon_order"
+                self.order, "empty_wagon_order"
         ):
             super(WagonOrder, self).save(*args, **kwargs)
         else:
@@ -125,7 +126,7 @@ class WagonEmptyOrder(models.Model):
 
     def save(self, *args, **kwargs):
         if not hasattr(self.order, "container_order") and not hasattr(
-            self.order, "wagon_order"
+                self.order, "wagon_order"
         ):
             super(WagonEmptyOrder, self).save(*args, **kwargs)
         else:

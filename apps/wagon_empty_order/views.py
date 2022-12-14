@@ -25,7 +25,7 @@ class WagonEmptyOrderCreate(APIView):
 
 class WagonEmptyOrderList(ListAPIView):
     serializer_class = WagonEmptyOrderListSerializer
-    queryset = WagonEmptyOrder.objects.all().select_related(
+    queryset = WagonEmptyOrder.objects.filter(order__visible=True).select_related(
         "order__departure", "order__destination"
     )
 

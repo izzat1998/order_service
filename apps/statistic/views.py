@@ -14,17 +14,19 @@ class OrderStatistic(APIView):
     def get(self, request, *args, **kwargs):
         if 'manager' in request.GET:
 
-            order_types = Order.objects.filter(manager=request.GET['manager']).values("type").annotate(
+            order_types = Order.objects.filter(visible=True, manager=request.GET['manager']).values("type").annotate(
                 count=Count("id"))
             container_orders = (
-                ContainerOrder.objects.filter(order__manager=request.GET['manager']).order_by("order__position")
+                ContainerOrder.objects.filter(order__visible=True, order__manager=request.GET['manager']).order_by(
+                    "order__position")
                 .values("order__position")
                 .annotate(
                     agreed_rate=Sum("container_types__expanses__agreed_rate"),
                     containers_count=Count("id"),
                 )
             )
-            wagon_orders = WagonOrder.objects.filter(order__manager=request.GET['manager']).order_by(
+            wagon_orders = WagonOrder.objects.filter(order__visible=True,
+                                                     order__manager=request.GET['manager']).order_by(
                 "order__position").values("order__position").annotate(
                 agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
                 containers_count=Count("id")
@@ -32,7 +34,8 @@ class OrderStatistic(APIView):
             )
 
             empty_wagon_orders = (
-                WagonEmptyOrder.objects.filter(order__manager=request.GET['manager']).order_by("order__position")
+                WagonEmptyOrder.objects.filter(order__visible=True, order__manager=request.GET['manager']).order_by(
+                    "order__position")
                 .values("order__position")
                 .annotate(
                     agreed_rate=Sum("expanses__agreed_rate"), wagons_count=Count("id")
@@ -48,23 +51,24 @@ class OrderStatistic(APIView):
                 {'order_type': order_types}
             )
         else:
-            order_types = Order.objects.values("type").annotate(count=Count("id"))
+            order_types = Order.objects.filter(order__visible=True).values("type").annotate(count=Count("id"))
             container_orders = (
-                ContainerOrder.objects.order_by("order__position")
-                .values("order__position")
+                ContainerOrder.objects.filter(order__visible=True).order_by("order__position")
+                .values("order__position", 'order__shipment_status')
                 .annotate(
                     agreed_rate=Sum("container_types__expanses__agreed_rate"),
                     containers_count=Count("id"),
                 )
             )
-            wagon_orders = WagonOrder.objects.order_by("order__position").values("order__position").annotate(
+            wagon_orders = WagonOrder.objects.filter(order__visible=True).order_by("order__position").values(
+                "order__position").annotate(
                 agreed_rate=Sum(F("expanses__agreed_rate_per_tonn") * F("expanses__actual_weight")),
                 containers_count=Count("id")
 
             )
 
             empty_wagon_orders = (
-                WagonEmptyOrder.objects.order_by("order__position")
+                WagonEmptyOrder.objects.filter(order__visible=True).order_by("order__position")
                 .values("order__position")
                 .annotate(
                     agreed_rate=Sum("expanses__agreed_rate"), wagons_count=Count("id")
@@ -83,14 +87,14 @@ class OrderStatistic(APIView):
 class OrderStatisticMonthly(APIView):
     def get(self, request, *args, **kwargs):
         monthly_orders = (
-            Order.objects.annotate(month=ExtractMonth("date"), year=ExtractYear("date"))
+            Order.objects.filter(visible=True).annotate(month=ExtractMonth("date"), year=ExtractYear("date"))
             .values("month", "year")
             .annotate(total=Count("*"))
             .values("month", "year", "total")
         )
 
         container_expanses = (
-            ContainerExpanse.objects.annotate(
+            ContainerExpanse.objects.filter(order__visible=True).annotate(
                 month=ExtractMonth("container_type__order__order__date"),
                 year=ExtractYear("container_type__order__order__date"),
             )
@@ -110,7 +114,7 @@ class OrderStatisticMonthly(APIView):
 class OrderStatisticByUser(APIView):
     def get(self, request):
         orders = (
-            Order.objects.order_by("manager")
+            Order.objects.filter(visible=True).order_by("manager")
             .values("manager")
             .annotate(count=Count("id"))
         )

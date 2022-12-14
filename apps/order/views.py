@@ -9,7 +9,8 @@ from .serializers.serializers import OrderSerializer
 
 class OrderList(APIView):
     def get(self, request):
-        orders = Order.objects.all()
+
+        orders = Order.objects.filter(visible=True)
         for order in orders:
             if hasattr(order, 'wagon_order'):
                 order.child_type = 'wagon_order'

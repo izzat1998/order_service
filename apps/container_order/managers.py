@@ -18,5 +18,6 @@ class ContainerOrderManager(models.Manager):
         )
 
     def get_list(self):
-        return self.all().select_related("order__departure", "order__destination", "product").order_by(
+        return self.filter(order__visible=True).select_related("order__departure", "order__destination",
+                                                               "product").order_by(
             "-order__order_number")

@@ -14,7 +14,7 @@ from .serializers.wagon_update import WagonOrderUpdateSerializer
 # Create your views here.
 class WagonOrderList(ListAPIView):
     serializer_class = WagonOrderListSerializer
-    queryset = WagonOrder.objects.all().select_related(
+    queryset = WagonOrder.objects.filter(order__visible=True).select_related(
         "order__departure", "order__destination", "product"
     )
 
