@@ -14,7 +14,7 @@ class OrderList(APIView):
         orders = Order.objects.filter(visible=True)
         if 'container' in request.GET:
             orders = orders.filter(container_order__container_types__expanses__container__name__icontains=request.GET[
-                'container'])
+                'container']).distinct('order_number')
         if 'manager' in request.GET:
             orders = orders.filter(manager=request.GET['manager'])
         if 'order_number' in request.GET:
