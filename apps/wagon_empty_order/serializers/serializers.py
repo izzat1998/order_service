@@ -7,6 +7,7 @@ from apps.order.models import Order
 from apps.wagon_empty_order.models import WagonEmptyActualCost
 
 
+
 class WagonEmptyCounterPartyOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     category = CategorySerializer()
@@ -19,7 +20,7 @@ class WagonEmptyCounterPartyOrderTotalExpanseSerializer(serializers.Serializer):
     category = CategorySerializer()
     counterparty = CounterpartySerializer()
 
-    def _get_total_expanZses(self, obj):
+    def _get_total_expanses(self, obj):
         return WagonEmptyActualCost.objects.filter(counterparty_id=obj.id).aggregate(
             total=Sum("actual_cost")
         )["total"]
