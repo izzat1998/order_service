@@ -1,5 +1,6 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,6 +12,7 @@ from .serializers.wagon_empty_create import (
 from .serializers.wagon_empty_order_list import (
     WagonEmptyOrderListSerializer,
 )
+from .serializers.wagon_empty_update import WagonEmptyOrderUpdateSerializer
 
 
 class WagonEmptyOrderCreate(APIView):
@@ -48,3 +50,15 @@ class WagonEmptyOrderDetail(APIView):
 
         serializer = WagonEmptyOrderSerializer(orders, many=True)
         return Response(serializer.data)
+
+
+class WagonEmptyOrderUpdate(APIView):
+    @extend_schema(request=None, responses=WagonEmptyOrderUpdateSerializer)
+    def put(self, request, order_number):
+        order = get_object_or_404(WagonEmptyOrder, order__order_number=order_number)
+        serializer = WagonEmptyOrderUpdateSerializer(order, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        return Response(
+            {"Order number": order.order.order_number}, status=status.HTTP_200_OK
+        )

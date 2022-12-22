@@ -3,11 +3,12 @@ from django.urls import path, include
 from .views import (
     WagonEmptyOrderCreate,
     WagonEmptyOrderList,
-    WagonEmptyOrderDetail,
+    WagonEmptyOrderDetail, WagonEmptyOrderUpdate,
 )
 
 urlpatterns = [
     path("create/", WagonEmptyOrderCreate.as_view(), name="wagon_empty_order_create"),
+    path("update/<int:order_number>/", WagonEmptyOrderUpdate.as_view(), name="wagon_empty_order_update"),
     path("list/", WagonEmptyOrderList.as_view(), name="wagon_empty_order_list"),
     path(
         "list/<int:order_number>/",
