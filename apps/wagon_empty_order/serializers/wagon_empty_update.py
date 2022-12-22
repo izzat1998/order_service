@@ -2,6 +2,7 @@ from django.db.models import Q
 from rest_framework import serializers
 
 from apps.core.models import Station
+from apps.order.models import Order
 
 
 class OrderUpdateSerializer(serializers.Serializer):
