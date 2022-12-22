@@ -22,6 +22,5 @@ urlpatterns = [
         "counterparty_add/",
         WagonCounterPartyAddExpanse.as_view(),
         name="wagon_counterparty_add",
-    ),
-    path()
+    )
 ]
