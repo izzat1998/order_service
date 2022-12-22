@@ -1,14 +1,28 @@
+from django.db.models import Sum
 from rest_framework import serializers
 
 from apps.core.serializers import WagonSerializer
 from apps.counterparty.serializers import CounterpartySerializer, CategorySerializer
 from apps.order.models import Order
+from apps.wagon_empty_order.models import WagonEmptyActualCost
 
 
 class WagonEmptyCounterPartyOrderSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     category = CategorySerializer()
     counterparty = CounterpartySerializer()
+
+
+class WagonEmptyCounterPartyOrderTotalExpanseSerializer(serializers.Serializer):
+    total_expanses = serializers.SerializerMethodField("_get_total_expanses")
+    id = serializers.IntegerField(read_only=True)
+    category = CategorySerializer()
+    counterparty = CounterpartySerializer()
+
+    def _get_total_expanZses(self, obj):
+        return WagonEmptyActualCost.objects.filter(counterparty_id=obj.id).aggregate(
+            total=Sum("actual_cost")
+        )["total"]
 
 
 class WagonEmptyActualCostSerializer(serializers.Serializer):
@@ -52,7 +66,7 @@ class OrderSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=255)
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
-    counterparties = WagonEmptyCounterPartyOrderSerializer(many=True)
+    counterparties = WagonEmptyCounterPartyOrderTotalExpanseSerializer(many=True)
 
 
 class PreliminaryCostSerializer(serializers.Serializer):
