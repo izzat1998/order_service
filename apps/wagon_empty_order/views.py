@@ -27,9 +27,18 @@ class WagonEmptyOrderCreate(APIView):
 
 class WagonEmptyOrderList(ListAPIView):
     serializer_class = WagonEmptyOrderListSerializer
-    queryset = WagonEmptyOrder.objects.filter(order__visible=True).select_related(
-        "order__departure", "order__destination"
-    )
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = WagonEmptyOrder.objects.filter(order__visible=True).select_related(
+            "order__departure", "order__destination")
+        manager = self.request.query_params.get('manager')
+        if manager is not None:
+            queryset = queryset.filter(order__manager=manager)
+        return queryset
 
 
 class WagonEmptyOrderDetail(APIView):

@@ -14,9 +14,19 @@ from .serializers.wagon_update import WagonOrderUpdateSerializer
 # Create your views here.
 class WagonOrderList(ListAPIView):
     serializer_class = WagonOrderListSerializer
-    queryset = WagonOrder.objects.filter(order__visible=True).select_related(
-        "order__departure", "order__destination", "product"
-    )
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = WagonOrder.objects.filter(order__visible=True).select_related(
+            "order__departure", "order__destination", "product"
+        )
+        manager = self.request.query_params.get('manager')
+        if manager is not None:
+            queryset = queryset.filter(order__manager=manager)
+        return queryset
 
 
 class WagonOrderDetail(APIView):
