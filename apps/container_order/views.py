@@ -29,7 +29,17 @@ class ContainerOrderList(ListAPIView):
     ]
     filter_backends = [SearchFilter]
     serializer_class = ContainerOrderListSerializer
-    queryset = ContainerOrder.container_order_objects.get_list()
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = ContainerOrder.container_order_objects.get_list()
+        manager = self.request.query_params.get('manager')
+        if manager is not None:
+            queryset = queryset.filter(order__manager=manager)
+        return queryset
 
 
 class ContainerOrderDetail(APIView):
