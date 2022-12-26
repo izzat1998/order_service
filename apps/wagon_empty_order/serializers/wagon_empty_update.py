@@ -69,7 +69,6 @@ class WagonEmptyOrderUpdateSerializer(serializers.Serializer):
         instance.order.comment = order_data.pop("comment")
         instance.order.manager = order_data.pop("manager")
         instance.order.customer = order_data.pop("customer")
-        instance.quantity = validated_data.pop("quantity")
         instance.order.save()
         instance.save()
         return instance
