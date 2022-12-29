@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 
 from .models import Order
 from .serializers.serializers import OrderSerializer
-from ..core.models import Container
 
 
 class OrderList(APIView):
@@ -17,6 +16,8 @@ class OrderList(APIView):
                 'container']).distinct('order_number')
         if 'manager' in request.GET:
             orders = orders.filter(manager=request.GET['manager'])
+        if 'customer' in request.GET:
+            orders = orders.filter(customer=request.GET['customer'])
         if 'order_number' in request.GET:
             orders = orders.filter(order_number=request.GET['order_number'])
         if 'position' in request.GET:
