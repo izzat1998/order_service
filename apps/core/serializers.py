@@ -1,6 +1,25 @@
 from rest_framework import serializers
 
-from .models import Product, Station, Container, Wagon
+from .models import Product, Station, Container, Wagon, Territory
+
+
+class TerritorySerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(required=True)
+
+    def validate(self, data):
+        if Product.objects.filter(
+                name=data["name"]).exists():
+            raise serializers.ValidationError("Territory  already exists")
+        return data
+
+    def create(self, validated_data):
+        return Territory.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get("name")
+        instance.save()
+        return instance
 
 
 class ProductSerializer(serializers.Serializer):
@@ -12,7 +31,7 @@ class ProductSerializer(serializers.Serializer):
 
     def validate(self, data):
         if Product.objects.filter(
-            name=data["name"], etcng_code=data["etcng_code"], hc_code=data["hc_code"]
+                name=data["name"], etcng_code=data["etcng_code"], hc_code=data["hc_code"]
         ).exists():
             raise serializers.ValidationError("Product  already exists")
         return data

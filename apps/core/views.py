@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
 
 from apps.container_order.serializers.serializers import ContainerSerializer
-from .models import Product, Station, Container
-from .serializers import ProductSerializer, StationSerializer
+from .models import Product, Station, Container, Territory
+from .serializers import ProductSerializer, StationSerializer, TerritorySerializer
 
 
 # Create your views here.
@@ -77,3 +77,9 @@ class ContainerViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter]
     search_fields = ["name"]
     queryset = Container.objects.all()
+
+class TerritoryViewSet(viewsets.ModelViewSet):
+    serializer_class = TerritorySerializer
+    filter_backends = [SearchFilter]
+    search_fields = ["name"]
+    queryset = Territory.objects.all()

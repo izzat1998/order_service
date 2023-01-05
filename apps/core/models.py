@@ -12,6 +12,18 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class Territory(TimeStampedModel):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = 'Territory'
+        verbose_name_plural = 'Territories'
+        db_table = 'territory'
+
+    def __str__(self):
+        return self.name
+
+
 class Station(TimeStampedModel):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=255)

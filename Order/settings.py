@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'apps.order.apps.OrderConfig',
     'apps.core.apps.CoreConfig',
     'apps.statistic.apps.StatisticConfig',
-    'apps.wagon_empty_order.apps.WagonEmptyOrderConfig'
+    'apps.wagon_empty_order.apps.WagonEmptyOrderConfig',
+    'apps.code.apps.CodeConfig',
 ]
 
 SPECTACULAR_SETTINGS = {
