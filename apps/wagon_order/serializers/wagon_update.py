@@ -24,7 +24,7 @@ class OrderUpdateSerializer(serializers.Serializer):
         max_length=255, allow_blank=True, allow_null=True
     )
     conditions_of_carriage = serializers.CharField(allow_blank=True, allow_null=True)
-    rolling_stock = serializers.CharField(max_length=255, allow_blank=True)
+    rolling_stock = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     departure_country = serializers.CharField(
         max_length=255, allow_blank=True, allow_null=True
     )
@@ -43,7 +43,7 @@ class WagonOrderUpdateSerializer(serializers.Serializer):
 
     def validate(self, data):
         if not Station.objects.filter(
-            Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
+                Q(id=data["order"]["departure_id"]) or data["order"]["destination_id"]
         ).exists():
             raise serializers.ValidationError(
                 "Departure or Destination station doesnt exist"
@@ -73,7 +73,7 @@ class WagonOrderUpdateSerializer(serializers.Serializer):
         instance.order.manager = order_data.pop("manager")
         instance.order.customer = order_data.pop("customer")
         instance.quantity = validated_data.pop("quantity")
-        instance.product = validated_data.pop("product_id")
+        instance.product_id = validated_data.pop("product_id")
         instance.order.save()
         instance.save()
         return instance
