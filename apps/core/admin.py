@@ -1,9 +1,17 @@
 from django.contrib import admin
 
-from .models import Product, Station, Container, Wagon
+from .models import Product, Station, Container, Wagon, Territory
 
 
 # Register your models here.
+
+class TerritoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+
+
+admin.site.register(Territory, TerritoryAdmin)
+
+
 class StationAdmin(admin.ModelAdmin):
     list_display = ("name", "code")
 
