@@ -39,7 +39,7 @@ class OrderUpdateSerializer(serializers.Serializer):
         max_length=255, allow_blank=True, allow_null=True
     )
     conditions_of_carriage = serializers.CharField(allow_blank=True, allow_null=True)
-    rolling_stock = serializers.CharField(max_length=255, allow_blank=True)
+    rolling_stock = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     departure_country = serializers.CharField(
         max_length=255, allow_blank=True, allow_null=True
     )
