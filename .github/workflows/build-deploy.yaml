@@ -41,6 +41,7 @@ jobs:
       - name: sync database
         run: |
           python manage.py makemigrations
+          python manage.py makemigrations code
           python manage.py migrate
 
       - name: test with pytest
