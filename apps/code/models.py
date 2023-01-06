@@ -48,6 +48,7 @@ class Application(TimeStampedModel):
     container_type = models.CharField(max_length=50, choices=CONTAINER_TYPE, null=True, blank=True)
     weight = models.CharField(max_length=50, blank=True, null=True)
     territories = models.ManyToManyField(Territory, related_name='applications')
+
     forwarder = models.ForeignKey(Counterparty, related_name='applications', on_delete=models.SET_NULL, null=True)
     manager = models.IntegerField(blank=True)
     customer = models.IntegerField(blank=True)
