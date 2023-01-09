@@ -56,9 +56,9 @@ class DocxService:
             fields['weight'] = application_data.get('weight')
         doc = DocxTemplate(cls.template)
         doc.render(fields)
-        doc.save('generated_doc.docx')
+        doc.save('media/applications/generated_doc.docx')
         application_name = f'{forwarder.name}_{fields["order_number"]}_Заявка на коды по {territories}.pdf'
-        return 'generated_doc.docx', application_name
+        return 'media/applications/generated_doc.docx', application_name
 
 
 class ConvertToPdf:
