@@ -18,6 +18,9 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.documentation import include_docs_urls
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
 
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
@@ -38,3 +41,6 @@ urlpatterns = [
 
 ]
 urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

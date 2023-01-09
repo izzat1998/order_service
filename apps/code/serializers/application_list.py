@@ -11,6 +11,7 @@ class ApplicationListSerializer(serializers.Serializer):
     number = serializers.IntegerField(read_only=True)
     quantity = serializers.IntegerField(read_only=True)
     date = serializers.DateField(read_only=True)
+    period = serializers.CharField(read_only=True)
     sending_type = serializers.ChoiceField(read_only=True, choices=Application.SENDING_TYPE)
     shipper = serializers.CharField(read_only=True)
     consignee = serializers.CharField(read_only=True)
@@ -19,8 +20,12 @@ class ApplicationListSerializer(serializers.Serializer):
     border_crossing = serializers.CharField(read_only=True)
     departure_country = serializers.CharField(read_only=True)
     destination_country = serializers.CharField(read_only=True)
+    rolling_stock_1 = serializers.CharField(read_only=True)
+    rolling_stock_2 = serializers.CharField(read_only=True)
+    paid_telegram = serializers.CharField(read_only=True)
     departure = StationSerializer()
     destination = StationSerializer()
+    containers_or_wagons = serializers.CharField(read_only=True)
     product = ProductSerializer()
     loading_type = serializers.ChoiceField(
         choices=Application.LOADING_CHOICES,
@@ -31,3 +36,4 @@ class ApplicationListSerializer(serializers.Serializer):
     forwarder = CounterpartySerializer()
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
+    file = serializers.FileField()

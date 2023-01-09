@@ -20,7 +20,9 @@ class ApplicationCreate(APIView):
         serializer.is_valid(raise_exception=True)
         application = serializer.save()
         return Response(
-            {"Application number": application.number}, status=status.HTTP_201_CREATED
+            {"application_number": application.number,
+             "application_file":application.file.url
+             }, status=status.HTTP_201_CREATED
         )
 
 
