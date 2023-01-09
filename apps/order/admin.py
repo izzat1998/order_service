@@ -7,7 +7,7 @@ from .models import Order, WagonOrder, WagonEmptyOrder
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("order_number",)
+    list_display = ("order_number", "manager", "customer")
 
 
 admin.site.register(Order, OrderAdmin)
