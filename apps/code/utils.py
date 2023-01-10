@@ -23,7 +23,7 @@ class DocxService:
         destination = Station.objects.filter(id=application_data.get('destination_id')).first()
         product = Product.objects.filter(id=application_data.get('product_id')).first()
         fields = {
-            'order_number': str(application_data.get('prefix') + application_data.get('number')),
+            'order_number': str(application_data.get('prefix') + str(application_data.get('number'))),
             'date': datetime.datetime.strptime(str(application_data.get('date')), '%Y-%m-%d').strftime('%d.%m.%y'),
             'forwarder': forwarder.name,
             'shipper': application_data.get('shipper'),

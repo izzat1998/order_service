@@ -6,9 +6,9 @@ from apps.counterparty.models import Counterparty
 
 class Application(TimeStampedModel):
     LOADING_CHOICES = (
-        ("container", "Container"),
-        ("wagon", "Wagon"),
-        ("empty_wagon", "EmptyWagon"),
+        ("Container", "Container"),
+        ("Wagon", "Wagon"),
+        ("Empty_wagon", "EmptyWagon"),
     )
     CONTAINER_TYPE = (
         ('20', '20'),

@@ -32,7 +32,7 @@ class ApplicationListSerializer(serializers.Serializer):
     )
     container_type = serializers.ChoiceField(choices=Application.CONTAINER_TYPE)
     weight = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
-    territories = TerritorySerializer()
+    territories = TerritorySerializer(many=True)
     forwarder = CounterpartySerializer()
     manager = serializers.IntegerField()
     customer = serializers.IntegerField()
