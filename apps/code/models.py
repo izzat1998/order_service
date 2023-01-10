@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from apps.core.models import TimeStampedModel, Station, Product, Territory
 from apps.counterparty.models import Counterparty
@@ -70,3 +72,11 @@ class Application(TimeStampedModel):
         db_table = "application"
         verbose_name = "Application"
         verbose_name_plural = "Applications"
+
+
+@receiver(post_delete, sender=Application)
+def post_save_image(sender, instance, *args, **kwargs):
+    try:
+        instance.file.delete(save=False)
+    except Exception:
+        raise RuntimeError("cannot  delete files")

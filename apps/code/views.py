@@ -40,6 +40,13 @@ class ApplicationUpdate(APIView):
         )
 
 
+class ApplicationDelete(APIView):
+    def delete(self, request, id):
+        order = get_object_or_404(Application, id=id)
+        order.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ApplicationList(ListAPIView):
     queryset = Application.objects.all().select_related('departure', 'destination', 'product',
                                                         'forwarder').prefetch_related('territories')
