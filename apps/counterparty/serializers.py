@@ -24,6 +24,7 @@ class CategorySerializer(serializers.Serializer):
 class CounterpartySerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True)
+    is_used_for_code = serializers.BooleanField(default=False)
 
     def create(self, validated_data):
         return Counterparty.objects.create(**validated_data)
