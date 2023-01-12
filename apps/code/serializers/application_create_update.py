@@ -56,7 +56,6 @@ class ApplicationCreateUpdateSerializer(serializers.Serializer):
         return application
 
     def update(self, instance, validated_data):
-        old_path = instance.file.path
         instance.quantity = validated_data.get('quantity')
         instance.prefix = validated_data.get('prefix')
         instance.date = validated_data.get('date')
@@ -96,6 +95,5 @@ class ApplicationCreateUpdateSerializer(serializers.Serializer):
         except Exception:
             raise serializers.ValidationError('Error while creating file')
 
-        os.remove(old_path)
         instance.save()
         return instance
