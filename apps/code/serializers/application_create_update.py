@@ -66,6 +66,7 @@ class ApplicationCreateUpdateSerializer(serializers.Serializer):
         instance.consignee = validated_data.get('consignee')
         instance.condition_of_carriage = validated_data.get('condition_of_carriage')
         instance.agreed_rate = validated_data.get('agreed_rate')
+        instance.border_crossing = validated_data.get('border_crossing')
         instance.departure_country = validated_data.get('departure_country')
         instance.destination_country = validated_data.get('destination_country')
         instance.rolling_stock_1 = validated_data.get('rolling_stock_1')
