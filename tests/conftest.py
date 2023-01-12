@@ -3,12 +3,16 @@ import datetime
 import pytest
 
 from apps.container_order.models import ContainerOrder, CounterPartyOrder, ContainerTypeOrder, ContainerPreliminaryCost
-from apps.core.models import Product, Station
+from apps.core.models import Product, Station, Territory
 from apps.counterparty.models import CounterpartyCategory, Counterparty
 from apps.order.models import Order
 
 
 # Core
+@pytest.fixture
+def territory(db):
+    return Territory.objects.create(name='UZB')
+
 
 @pytest.fixture
 def product(db):

@@ -48,6 +48,7 @@ class ApplicationDelete(APIView):
 
 
 class ApplicationList(ListAPIView):
+
     queryset = Application.objects.all().select_related('departure', 'destination', 'product',
                                                         'forwarder').prefetch_related('territories')
     serializer_class = ApplicationListSerializer

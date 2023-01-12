@@ -70,7 +70,7 @@ class Order(TimeStampedModel):
 
     @classmethod
     def last_number(cls):
-        return cls.objects.last().order_number
+        return cls.objects.last().order_number if cls.objects.exists() else 0
 
     @classmethod
     def position_count(cls, position_type):

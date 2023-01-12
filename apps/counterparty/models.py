@@ -18,6 +18,7 @@ class CounterpartyCategory(TimeStampedModel):
 # Create your models here.
 class Counterparty(TimeStampedModel):
     name = models.CharField(max_length=100, unique=True)
+    is_used_for_code = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Counterparty"
