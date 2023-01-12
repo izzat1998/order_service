@@ -59,6 +59,7 @@ class Application(TimeStampedModel):
     manager = models.IntegerField(blank=True)
     customer = models.IntegerField(blank=True)
     file = models.FileField('applications/', null=True)
+    is_filled = models.BooleanField(default=False)
 
     def __str__(self):
         return self.prefix + str(self.number)

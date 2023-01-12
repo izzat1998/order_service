@@ -1,5 +1,4 @@
-from pyexpat import model
-
+from django.db.models import Count, Q
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, get_object_or_404
@@ -48,10 +47,19 @@ class ApplicationDelete(APIView):
 
 
 class ApplicationList(ListAPIView):
-
     queryset = Application.objects.all().select_related('departure', 'destination', 'product',
                                                         'forwarder').prefetch_related('territories')
     serializer_class = ApplicationListSerializer
+
+
+class ApplicationStatistic(APIView):
+    def get(self, request):
+        application_statistic = Application.objects.values('forwarder__name').annotate(
+            filled=Count('is_filled', filter=Q(is_filled=True)),
+            not_filled=Count('is_filled',
+                             filter=Q(is_filled=False)))
+
+        return Response({'applications': application_statistic})
 
 
 class ApplicationDetail(RetrieveAPIView):
